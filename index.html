@@ -290,7 +290,7 @@ const UI = {
     name: "اسم الطالب",
     ph: "اكتب اسمك",
     start: "بدء الاختبار",
-    note: "60 سؤالاً قصيراً، ولكل سؤال ثلاثة خيارات قريبة. يُخلط ترتيب الأسئلة وترتيب الخيارات في كل محاولة. الإجابة الخطأ تُظهر فجوة في الخدمة، والصحيحة تُظهر أن الخدمة جاهزة. عند عرض التقرير تُرسل العلامة وتفاصيل كل سؤال إلى سجل المعلم.",
+    note: "60 سؤالاً قصيراً، ولكل سؤال ثلاثة خيارات قريبة. يُخلط ترتيب الأسئلة وترتيب الخيارات في كل محاولة. بعد الاختيار تظهر عبارة إجابة صحيحة أو إجابة خاطئة. عند عرض التقرير تُرسل العلامة وتفاصيل كل سؤال إلى سجل المعلم.",
     case: "موقف",
     confirm: "تأكيد الإجابة",
     next: "السؤال التالي",
@@ -298,9 +298,9 @@ const UI = {
     why: "لماذا هذه الإجابة",
     impact: "الأثر على المؤسسة",
     miss: "لماذا لا يصلح الخياران الآخران",
-    secure: "الخدمة جاهزة",
+    secure: "إجابة صحيحة",
     verified: "الاختيار يوافق الحاجة",
-    breach: "الربط غير مكتمل",
+    breach: "إجابة خاطئة",
     denied: "الخيار لا يخدم هذه الحالة",
     correctStamp: "الخيار المناسب",
     wrongStamp: "خيار قريب، لكنه لا يطابق الحالة",
@@ -344,7 +344,7 @@ const UI = {
     name: "Student name",
     ph: "Type your name",
     start: "Start the exam",
-    note: "60 short questions, three close choices each. Question order and choice order are shuffled on every attempt. A wrong answer shows a gap in the service. A right answer shows the service is ready. Opening the report sends the mark and every question to the teacher log.",
+    note: "60 short questions, three close choices each. Question order and choice order are shuffled on every attempt. After a choice, the screen says Correct answer or Wrong answer. Opening the report sends the mark and every question to the teacher log.",
     case: "Situation",
     confirm: "Confirm answer",
     next: "Next question",
@@ -352,9 +352,9 @@ const UI = {
     why: "Why this answer",
     impact: "Effect on the organisation",
     miss: "Why the other two fail",
-    secure: "Service ready",
+    secure: "Correct answer",
     verified: "The choice fits the need",
-    breach: "Link incomplete",
+    breach: "Wrong answer",
     denied: "This choice does not serve the case",
     correctStamp: "Fitting choice",
     wrongStamp: "A close choice, but it does not match the case",
@@ -460,9 +460,8 @@ function tone(ok) {
 function showFx(ok) {
   const fx = document.getElementById("fx");
   const u = t();
-  const lines = ok ? "LINK UP\nTASK OK\nSERVICE LIVE" : "LINK WEAK\nCHOICE MISS\nREVIEW NEED";
   fx.className = "fx on " + (ok ? "good" : "bad");
-  fx.innerHTML = `<div class="fx-card"><p class="kicker">${ok ? "READY" : "GAP"}</p><h2>${esc(ok ? u.secure : u.breach)}</h2><p class="stamp">${esc(ok ? u.verified : u.denied)}</p><div class="stream">${lines}</div></div>`;
+  fx.innerHTML = `<div class="fx-card"><h2>${esc(ok ? u.secure : u.breach)}</h2><p class="stamp">${esc(ok ? u.verified : u.denied)}</p></div>`;
   document.body.classList.toggle("gap", !ok);
   clearTimeout(fxTimer);
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
