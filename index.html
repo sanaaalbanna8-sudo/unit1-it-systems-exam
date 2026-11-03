@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>اختبار الوحدة 1 | أنظمة تكنولوجيا المعلومات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4efe4;
+    --ink: #1c2836;
+    --muted: #5e6a76;
+    --line: #ddd2c0;
+    --panel: rgba(255, 251, 245, 0.94);
+    --copper: #b85c38;
+    --copper-dim: rgba(184, 92, 56, 0.1);
+    --teal: #1f6f64;
+    --teal-dim: rgba(31, 111, 100, 0.12);
+    --good: #1d7a4a;
+    --good-dim: rgba(29, 122, 74, 0.12);
+    --bad: #9a4036;
+    --bad-dim: rgba(154, 64, 54, 0.1);
+    --shadow: 0 18px 40px rgba(60, 42, 22, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+    color: var(--ink);
+    line-height: 1.75;
+    background:
+      radial-gradient(900px 420px at 100% -10%, rgba(31, 111, 100, 0.08), transparent 55%),
+      radial-gradient(700px 380px at -10% 110%, rgba(184, 92, 56, 0.08), transparent 50%),
+      var(--bg);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(31, 111, 100, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31, 111, 100, 0.05) 1px, transparent 1px);
+    background-size: 28px 28px;
+    mask-image: linear-gradient(#000, transparent 85%);
+  }
+  header, main { position: relative; z-index: 1; }
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(244, 239, 228, 0.9);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .brand { display: flex; gap: 12px; align-items: center; }
+  .mark {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+    padding: 8px;
+  }
+  .mark i { display: block; border-radius: 2px; background: #f4efe4; }
+  .mark i:first-child { background: #e7b89a; }
+  .brand strong {
+    display: block;
+    font-family: "Outfit", "Cairo", sans-serif;
+    letter-spacing: 0.08em;
+    font-size: 13px;
+    color: var(--teal);
+  }
+  .brand small { color: var(--muted); font-size: 13px; }
+  .hdr-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  button, .choice { font-family: inherit; }
+  .ghost, .primary, .lang {
+    border: 1px solid var(--line);
+    background: #fffaf3;
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .lang { color: var(--teal); }
+  .primary {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #f7f1e6;
+    padding: 12px 22px;
+    font-size: 16px;
+  }
+  .primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ghost:hover, .lang:hover, .choice:hover { border-color: var(--teal); }
+  .primary:hover { background: #2a3b4e; }
+  main { max-width: 980px; margin: 0 auto; padding: 28px 18px 70px; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: 28px;
+  }
+  .kicker {
+    font-family: "Outfit", "Cairo", sans-serif;
+    color: var(--copper);
+    letter-spacing: 0.12em;
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  h1 { font-size: clamp(28px, 4vw, 42px); line-height: 1.35; margin: 0 0 10px; }
+  h2 { margin: 0 0 8px; font-size: 22px; }
+  .lede { color: var(--muted); font-size: 17px; margin-top: 0; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0; }
+  .card {
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px;
+    min-height: 132px;
+    border-top: 4px solid var(--teal);
+  }
+  .card b { display: block; color: var(--ink); margin-bottom: 6px; }
+  .card span { color: var(--muted); font-size: 14px; }
+  label.field { display: block; margin: 8px 0 18px; font-weight: 700; }
+  input[type="text"] {
+    width: min(420px, 100%);
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font: inherit;
+  }
+  input:focus, button:focus-visible, .choice:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 2px;
+  }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .meta {
+    display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+    color: var(--muted); font-size: 14px; margin-bottom: 10px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid #c9ddd8; color: var(--teal);
+    background: var(--teal-dim);
+    border-radius: 999px; padding: 2px 10px; font-size: 13px; font-weight: 700;
+  }
+  .bar { height: 8px; background: #efe6d6; border-radius: 99px; overflow: hidden; margin: 8px 0 18px; }
+  .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--copper), var(--teal)); width: 0; }
+  .scenario {
+    background: #fff;
+    border-inline-start: 4px solid var(--copper);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .choices { display: grid; gap: 10px; }
+  #liveScore, .count { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  html[dir="rtl"] .choice { direction: rtl; }
+  html[dir="ltr"] .choice { direction: ltr; }
+  .choice {
+    display: flex; gap: 12px; align-items: flex-start;
+    text-align: start; width: 100%;
+    background: #fff; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 14px;
+    padding: 14px; cursor: pointer; line-height: 1.7;
+  }
+  .choice .letter {
+    flex: 0 0 auto; width: 32px; height: 32px; border-radius: 10px;
+    display: grid; place-items: center;
+    background: var(--copper-dim); color: var(--copper); font-weight: 800;
+  }
+  .choice.selected { border-color: var(--teal); background: #f3faf8; }
+  .choice.good { border-color: var(--good); background: var(--good-dim); }
+  .choice.bad { border-color: var(--bad); background: var(--bad-dim); }
+  .choice:disabled { cursor: default; }
+  .feedback { margin-top: 16px; border-radius: 14px; padding: 16px; border: 1px solid var(--line); background: #fff; }
+  .feedback.good { border-color: #b7d7c4; }
+  .feedback.bad { border-color: #e3c2bd; }
+  .feedback h3 { margin: 0 0 8px; font-size: 16px; }
+  .feedback p { margin: 8px 0; }
+  .stamp {
+    font-family: "Outfit", "Cairo", sans-serif;
+    letter-spacing: 0.06em; font-size: 13px; font-weight: 700; color: var(--copper);
+  }
+  .report-top { display: grid; grid-template-columns: 180px 1fr; gap: 22px; align-items: center; }
+  .ring {
+    width: 160px; height: 160px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: conic-gradient(var(--teal) calc(var(--p) * 1%), #efe6d6 0);
+    margin-inline: auto;
+  }
+  .ring span {
+    width: 124px; height: 124px; border-radius: 50%;
+    background: #fffaf3; display: grid; place-items: center;
+    font-size: 32px; font-weight: 800;
+  }
+  .lo-row { display: grid; grid-template-columns: 150px 1fr 64px; gap: 8px; align-items: center; margin: 8px 0; }
+  .lo-track { height: 10px; background: #efe6d6; border-radius: 99px; overflow: hidden; }
+  .lo-track span { display: block; height: 100%; background: var(--teal); }
+  .miss { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 8px; }
+  .miss article { padding: 10px 0; border-bottom: 1px solid rgba(221, 210, 192, 0.9); }
+  .fx {
+    position: fixed; inset: 0; z-index: 20;
+    display: grid; place-items: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s linear;
+  }
+  .fx.on { opacity: 1; pointer-events: auto; }
+  .fx.bad { background: rgba(120, 64, 40, 0.28); }
+  .fx.good { background: rgba(20, 70, 58, 0.22); }
+  .fx-card {
+    text-align: center; padding: 28px 32px; border-radius: 20px;
+    background: #fffaf3; border: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .fx-card h2 { font-size: clamp(28px, 5vw, 48px); margin: 0; }
+  .fx.bad h2 { color: var(--bad); }
+  .fx.good h2 { color: var(--good); }
+  .stream {
+    font-family: "Outfit", sans-serif;
+    color: var(--muted); font-size: 13px; letter-spacing: 0.08em;
+    line-height: 1.6; white-space: pre; margin-top: 10px;
+  }
+  body.gap { animation: nudge 0.4s ease; }
+  @keyframes nudge {
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-1px); }
+  }
+  .hint { color: var(--muted); font-size: 14px; }
+  @media (max-width: 800px) {
+    .grid, .report-top { grid-template-columns: 1fr; }
+    .lo-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    header { padding: 12px; }
+    .panel { padding: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div id="fx" class="fx" role="alert" aria-live="assertive"></div>
+<header>
+  <div class="brand">
+    <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <div>
+      <strong id="brandCode">UNIT 1 · IT SYSTEMS</strong>
+      <small id="brandSub">أنظمة تكنولوجيا المعلومات</small>
+    </div>
+  </div>
+  <div class="hdr-actions">
+    <span class="chip" id="liveScore">0 / 60</span>
+    <button type="button" class="ghost" id="muteBtn">كتم الصوت</button>
+    <button type="button" class="lang" id="langBtn">English</button>
+  </div>
+</header>
+<main id="app"></main>
+<script>
+const QUESTIONS = [{"id":"a01","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"صالون يحتاج من جهاز واحد على المكتب أن يطبع ويصور المستندات ويمسحها ضوئياً ويرسلها بالبريد.","en":"A salon needs one desk device that can print, copy, scan and email documents."},"choices":[{"key":"mfd","ar":"جهاز متعدد الوظائف (MFD) يجمع الطباعة والنسخ والمسح والإرسال.","en":"A multifunctional device (MFD) that prints, copies, scans and sends."},{"key":"print","ar":"طابعة ثنائية الأبعاد فقط، لأن المسح والنسخ برنامج داخلها لا وظيفة جهاز.","en":"A 2D printer only, because scanning and copying are software inside it, not device functions."},{"key":"srv","ar":"خادم ملفات، لأن أي جهاز يخدم أكثر من غرض يُعد جهازاً متعدد الوظائف.","en":"A file server, because any device that serves more than one purpose is an MFD."}],"correct":"mfd","why":{"ar":"الجهاز متعدد الوظائف آلة واحدة تؤدي الطباعة والنسخ والمسح والفاكس أو البريد. هذا مطلب المكتب الصغير هنا.","en":"An MFD is one machine for print, copy, scan and fax or email. That is this small-office need."},"impact":{"ar":"يوفر مساحة وتكلفة جهاز ثانٍ، ويُبقي المستندات الورقية والرقمية في مسار واحد.","en":"It saves space and a second device, and keeps paper and digital documents on one path."},"miss":{"ar":"الطابعة وحدها لا تغطي المسح والنسخ. والخادم يخزّن الملفات مركزياً ولا يمسح الورق ولا ينسخه.","en":"A printer alone does not scan or copy. A server stores files centrally; it does not scan or copy paper."}},{"id":"a02","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"مهندسو الصيانة يتنقلون بين المواقع ويفتحون جداول بيانات، ثم يزامنون الملفات مع خادم الشركة.","en":"Maintenance engineers move between sites, open spreadsheets, then sync files to the company server."},"choices":[{"key":"lap","ar":"حاسوب محمول: يُحمل، ويؤدي العمل المكتبي، ويتصل بالخادم عبر الإنترنت.","en":"A laptop: it travels, handles office work, and reaches the server over the internet."},{"key":"tab","ar":"جهاز لوحي، لأن كل جهاز يُحمل يغني عن الحاسوب المحمول في الجداول الطويلة.","en":"A tablet, because any portable device replaces a laptop for long spreadsheets."},{"key":"desk","ar":"حاسوب برجي في المكتب، لأن قوته تغني عن الحمل وتُنقل الملفات على قرص.","en":"A desktop tower at the office, because its power removes the need to carry a computer."}],"correct":"lap","why":{"ar":"الحاسوب المحمول خيار المؤسسات للعاملين عن بعد. الجداول والبرامج المكتبية أنسب له من الجهاز اللوحي.","en":"Laptops suit staff who work away from base. Office spreadsheets fit a laptop better than a tablet."},"impact":{"ar":"يواصل المهندس العمل في الموقع من دون نسخ الملفات يدوياً في نهاية اليوم فقط.","en":"The engineer can keep working on site instead of moving files by hand only at the end of the day."},"miss":{"ar":"اللوحي أخف، لكن إنتاج الجداول يفضّل الحاسوب الشخصي أو المحمول. والبرجي ثابت فلا يخدم التنقل.","en":"A tablet is lighter, but spreadsheet work prefers a PC or laptop. A tower cannot travel."}},{"id":"a03","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"تريد المؤسسة هاتفاً تُستبدل فيه البطارية أو الكاميرا لتقليل الهدر وتكلفة الإصلاح.","en":"The organisation wants a phone whose battery or camera can be swapped, to cut waste and repair cost."},"choices":[{"key":"mod","ar":"هاتف ذكي معياري: قطعه قابلة للاستبدال أو الترقية.","en":"A modular smartphone: its parts can be replaced or upgraded."},{"key":"spc","ar":"هاتف متخصص، لأن الأزرار الكبيرة والهيكل المقوى هما نفسه استبدال القطع.","en":"A specialist phone, because large keys and a tough case are the same as swappable parts."},{"key":"wear","ar":"حاسوب يمكن ارتداؤه، لأن القطعة تُبدَّل على المعصم لا داخل الهاتف.","en":"A wearable computer, because the part is changed on the wrist rather than inside a phone."}],"correct":"mod","why":{"ar":"الهاتف المعياري يُبنى من وحدات تُستبدل لتخفيض النفايات وتكلفة الإصلاح، كما في فكرة فايرفون وموتورولا.","en":"A modular phone is built from units that can be replaced, which is the point of the Fairphone and Motorola idea in the unit."},"impact":{"ar":"تطيل المؤسسة عمر الجهاز بدل شراء هاتف كامل عند تعطل جزء واحد.","en":"The organisation extends the device’s life instead of buying a whole phone when one part fails."},"miss":{"ar":"الهاتف المتخصص لضعاف البصر أو للظروف القاسية، لا لتبديل القطع. والقابل للارتداء ساعة أو سوار أو نظارة، لا هيكل هاتف قابل للفك.","en":"A specialist phone helps with sight or harsh conditions, not part swaps. A wearable is a watch, band or glasses, not a phone chassis."}},{"id":"a04","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"الشرطة تريد تسجيل ما يحدث أمام الضابط وهو يتحرك، لا تصوير باب ثابت.","en":"The police want a record of what happens in front of an officer while moving, not a fixed view of a door."},"choices":[{"key":"body","ar":"كاميرا جسم تُلبس على الملابس لجمع دليل أثناء التنقل.","en":"A body-worn camera on clothing, to collect evidence while moving."},{"key":"gps","ar":"نظام ملاحة بالأقمار، لأن أي جهاز يتحرك مع الشخص يسجل الطريق فقط.","en":"A satellite navigation unit, because any device that moves with a person only records the route."},{"key":"cctv","ar":"كاميرا رقمية مثبتة عند المدخل، لأن الفيديو الثابت أوضح من الكاميرا الملبوسة.","en":"A fixed digital camera at the entrance, because a still viewpoint is clearer than a worn camera."}],"correct":"body","why":{"ar":"الكاميرا الملبوسة حاسوب يمكن ارتداؤه يجمع دليل النشاط أثناء الحركة. هذا استخدام مؤسسي مذكور للشرطة.","en":"A body-worn camera is a wearable used to collect evidence of activity on the move. The unit gives police this example."},"impact":{"ar":"الدليل يرافق الضابط إلى مكان الحدث، ولا يقتصر على زاوية باب واحدة.","en":"The evidence follows the officer to the event, instead of staying on one doorway angle."},"miss":{"ar":"الملاحة تحدد الموقع ولا تصور المواجهة. والكاميرا الثابتة تفوّت ما يحدث بعيداً عن العدسة.","en":"Navigation fixes a location; it does not film the encounter. A fixed camera misses whatever leaves its view."}},{"id":"a05","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"الكلية تريد ملفات الجميع في مكان واحد، وطابعة مشتركة، ونسخاً احتياطياً من موقع واحد.","en":"The college wants everyone’s files in one place, a shared printer, and backup from one place."},"choices":[{"key":"srv","ar":"خادم يخزّن الملفات والبرامج مركزياً ويدير الطابعة وحسابات الدخول.","en":"A server that stores files and software centrally and manages the printer and sign-in."},{"key":"usb","ar":"قرص خارجي على جهاز المعلم، لأن النسخ من جهاز واحد هو نفسه عمل الخادم.","en":"An external disk on the teacher’s PC, because copying from one computer is the same job as a server."},{"key":"media","ar":"خادم وسائط رقمية، لأن كل خادم مركزي مخصص للموسيقى والفيديو.","en":"A digital media server, because every central server is for music and video."}],"correct":"srv","why":{"ar":"الخادم يقدّم الملفات والتطبيقات والطابعات المشتركة والمصادقة، ويُنسخ من مكان واحد.","en":"A server provides shared files, applications, printers and authentication, and it is backed up from one place."},"impact":{"ar":"لا يتوقف عمل الزملاء على جهاز شخص واحد، ولا تتفرق النسخ بين أقراص خاصة.","en":"Colleagues are not tied to one person’s computer, and copies do not scatter across private disks."},"miss":{"ar":"القرص الخارجي نسخة محمولة لا تدير حسابات ولا طابعة للجميع. وخادم الوسائط لتشغيل الأفلام والموسيقى في المنزل أو القاعة.","en":"An external disk is portable storage; it does not run accounts or a shared printer. A media server plays film and music."}},{"id":"a06","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"السائق يحتاج موقعه على الطريق مع الازدحام وأعمال الطرق والطقس، لا مجرد اتجاه البوصلة.","en":"A driver needs position on the road plus traffic, roadworks and weather, not only a compass bearing."},"choices":[{"key":"gps","ar":"نظام ملاحة يعتمد نظام تحديد المواقع العالمي (GPS) وأقماره.","en":"A navigation system that uses the Global Positioning System (GPS) and its satellites."},{"key":"cell","ar":"موقع برج الهاتف فقط، لأن البرج والقمر الصناعي يؤديان الحساب نفسه.","en":"Mobile-mast location only, because a mast and a satellite do the same calculation."},{"key":"bt","ar":"بلوتوث بين الهاتف والسيارة، لأن الربط القصير هو الذي يرسم الطريق.","en":"Bluetooth between phone and car, because the short link is what draws the route."}],"correct":"gps","why":{"ar":"أنظمة الملاحة في الوحدة تستخدم GPS أو نظاماً ملاحيّاً بالأقمار، وتعرض الازدحام والطقس ونقاط الاهتمام.","en":"In this unit, navigation systems use GPS or another satellite system, and they can show traffic, weather and points of interest."},"impact":{"ar":"يصل السائق مع توقع للتأخير، بدل الاتجاه العام الذي لا يعرف الحادث على الطريق.","en":"The driver arrives with a sense of delay, rather than a general direction that misses an incident ahead."},"miss":{"ar":"برج الهاتف يعطي موقعاً تقريبياً داخل الخلية لا مسار قيادة بالأقمار. والبلوتوث يربط جهازين قريبين ولا يحسب الطريق.","en":"A mast gives a rough position inside a cell, not a satellite driving route. Bluetooth links two nearby devices; it does not calculate the route."}},{"id":"a07","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"عند الصندوق تُقرأ الخطوط المطبوعة على السلعة لإدخال سعرها بسرعة.","en":"At the till, the printed bars on an item are read so its price can be entered quickly."},"choices":[{"key":"bar","ar":"ماسح باركود: جهاز إدخال يلتقط الرمز المطبوع.","en":"A barcode scanner: an input device that reads the printed code."},{"key":"rfid","ar":"قارئ تحديد الهوية بموجات الراديو (RFID)، لأن كل مسح في المتجر موجات راديو.","en":"An RFID reader, because every scan in a shop is a radio wave."},{"key":"mon","ar":"شاشة الصندوق، لأن ظهور السعر يعني أن الشاشة هي التي أدخلت البيانات.","en":"The till screen, because showing the price means the screen entered the data."}],"correct":"bar","why":{"ar":"الباركود إدخال سريع من رمز مطبوع. أما RFID فيقرأ شارة راديو، والشاشة جهاز إخراج.","en":"A barcode is fast input from a printed code. RFID reads a radio tag, and the screen is an output device."},"impact":{"ar":"يقلّ خطأ كتابة السعر، ويتحدّث المخزون من عملية البيع نفسها.","en":"Price typing errors fall, and stock can update from the same sale."},"miss":{"ar":"RFID مناسب لشارة أمان أو تتبع لاسلكي، لا للخطوط المطبوعة. والشاشة تعرض الناتج ولا تلتقط الرمز.","en":"RFID fits a security tag or wireless tracking, not printed bars. The screen shows the result; it does not capture the code."}},{"id":"a08","lo":"A","code":{"ar":"أ.ب2 · العتاد","en":"A.P2 · Hardware"},"scenario":{"ar":"المعلمة تعرض شاشة حاسوبها على حائط القاعة لصف كبير.","en":"A teacher shows her computer screen on the hall wall for a large class."},"choices":[{"key":"out","ar":"جهاز العرض جهاز إخراج: يعرض ما هو موجود على الجهاز الرقمي.","en":"The projector is an output device: it shows what is already on the digital device."},{"key":"in","ar":"جهاز إدخال، لأن المعلمة تشير إليه فيصل الأمر إلى الحاسوب.","en":"An input device, because the teacher points at it and the instruction reaches the computer."},{"key":"store","ar":"جهاز تخزين، لأن ملف الدرس يبقى محفوظاً داخل جهاز العرض.","en":"A storage device, because the lesson file stays saved inside the projector."}],"correct":"out","why":{"ar":"أجهزة العرض تُصنَّف مع الشاشات كإخراج مرئي. الإشارة تتم بالماوس أو باللمس، لا بجهاز العرض.","en":"Projectors sit with screens as visual output. Pointing is done with a mouse or touch, not by the projector."},"impact":{"ar":"يراها الصف كله. جهاز العرض لا يحفظ الدرس ولا يرسل أوامر إلى الحاسوب.","en":"The whole class can see it. The projector neither keeps the lesson nor sends commands into the computer."},"miss":{"ar":"الإدخال ما يُرسل إلى الحاسوب، مثل لوحة المفاتيح. والتخزين قرص أو بطاقة ذاكرة، لا عدسة العرض.","en":"Input is what is sent into the computer, such as a keyboard. Storage is a disk or memory card, not the projector lens."}},{"id":"a09","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"موظف واحد يشغّل جدولاً ومتصفحاً وملفاً صوتياً في الوقت نفسه على حاسوبه.","en":"One employee runs a spreadsheet, a browser and an audio file at the same time on one computer."},"choices":[{"key":"multi","ar":"نظام تشغيل متعدد المهام لمستخدم واحد.","en":"A single-user, multitasking operating system."},{"key":"one","ar":"نظام مهمة واحدة لمستخدم واحد، لأن الحاسوب ينفّذ أمراً واحداً فلا تتعدد المهام.","en":"A single-user, single-task system, because a computer does one thing so the tasks are not multiple."},{"key":"users","ar":"نظام متعدد المستخدمين، لأن كل برنامج مفتوح يُحسب مستخدماً آخر.","en":"A multi-user system, because each open program counts as another user."}],"correct":"multi","why":{"ar":"تعدد المهام لمستخدم واحد يعني تطبيقات عدة لشخص واحد، وهو حال الحاسوب الشخصي والهاتف الذكي.","en":"Single-user multitasking means several applications for one person. That is a PC and a smartphone."},"impact":{"ar":"ينجز الموظف عمله من دون إغلاق كل برنامج قبل فتح الآخر، ضمن حدود الذاكرة والمعالج.","en":"The employee can work without closing every program first, within the limits of memory and processor."},"miss":{"ar":"مهمة واحدة تناسب جهازاً بسيطاً لا يشغّل إلا تطبيقاً واحداً. وتعدد المستخدمين يعني أشخاصاً عدة على النظام، غالباً عبر خادم، لا نوافذ لشخص واحد.","en":"Single-task fits a simple device that runs only one application. Multi-user means several people, often through a server, not several windows for one person."}},{"id":"a10","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"فرامل السيارة يجب أن تعالج قراءة الحساس في لحظة الحدث لا بعد انتهاء الرحلة.","en":"A car’s brakes must process the sensor reading at the moment of the event, not after the journey."},"choices":[{"key":"rtos","ar":"نظام تشغيل في الوقت الفعلي (RTOS) يعالج البيانات الآن.","en":"A real-time operating system (RTOS) that processes the data now."},{"key":"emb","ar":"أي نظام مضمّن يكفي، لأن البرنامج المخفي في الجهاز لا يرتبط بموعد الاستجابة.","en":"Any embedded system is enough, because hidden software in a device has no response deadline."},{"key":"gui","ar":"نظام سطح مكتب رسومي، لأن ظهور ضوء الفرامل على الشاشة يجعل الاستجابة فورية.","en":"A graphical desktop system, because a brake light on screen makes the response instant."}],"correct":"rtos","why":{"ar":"نظام الوقت الفعلي يعالج البيانات في لحظتها، مثل تحكم حرج. النظام المضمّن قد يعمل في الخلفية من دون شرط اللحظة.","en":"A real-time system processes data as it happens, which safety control needs. Embedded software may simply run in the background with no deadline."},"impact":{"ar":"التأخير هنا خطر على الراكب، لا مجرد بطء في فتح ملف.","en":"Delay here is a risk to the passenger, not merely a slow file."},"miss":{"ar":"المضمّن يتحكم بآلة وقد لا يكون فوريّاً. وسطح المكتب مصمم للمستخدم البشري لا لمهلة الفرامل.","en":"Embedded software controls a machine and need not be instant. A desktop is built for a person, not a brake deadline."}},{"id":"a11","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"موظفة جديدة بلا تدريب برمجي تحتاج أن تشغّل الحاسوب بالنقر على الرموز.","en":"A new employee with no programming training needs to operate the computer by clicking symbols."},"choices":[{"key":"gui","ar":"واجهة رسومية (GUI): نوافذ وأيقونات وقوائم ومؤشر.","en":"A graphical user interface (GUI): windows, icons, menus and a pointer."},{"key":"cli","ar":"سطر أوامر، لأن الكتابة أسرع فهو الأسهل لمن لا تدريب له.","en":"A command line, because typing is faster so it is easier for someone with no training."},{"key":"menu","ar":"واجهة قوائم فقط، لأن استهلاكها الأقل للذاكرة يجعلها دائماً الأسهل من الأيقونات.","en":"A menu-only interface, because its lower memory use always makes it easier than icons."}],"correct":"gui","why":{"ar":"الواجهة الرسومية تُشغَّل من دون معرفة الأوامر، وهذا يناسب المستخدم الجديد. ثمنها ذاكرة وقدرة أعلى.","en":"A GUI runs without command knowledge, which suits a new user. It costs more memory and power."},"impact":{"ar":"يبدأ العمل أسرع، مع حاجة الجهاز إلى مواصفات تكفي للرسوم.","en":"Work can start sooner, provided the device has enough specification for graphics."},"miss":{"ar":"سطر الأوامر مرن ويحتاج معرفة الأوامر. والقوائم أوفر في الذاكرة، لكن المستخدم يحتاج أن يعرف أي قائمة تؤدي الوظيفة.","en":"The command line is flexible and needs command knowledge. Menus use less memory, but the user must know which menu does the job."}},{"id":"a12","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"فنّي الشبكات يضبط موجّهاً من نوع سيسكو الذي لا يُدار إلا بالأوامر النصية.","en":"A network technician configures a Cisco router that is managed only by text commands."},"choices":[{"key":"cli","ar":"سطر أوامر عبر نافذة طرفية.","en":"The command line through a terminal window."},{"key":"gui","ar":"واجهة رسومية فقط، لأن كل جهاز حديث بما فيه الموجّه يُضبط بالأيقونات.","en":"A graphical interface only, because every modern device, including a router, is set up with icons."},{"key":"menu","ar":"قوائم معالج النصوص، لأنها قوائم فهي نفسها أوامر الموجّه.","en":"The word-processor menus, because a menu is the same thing as a router command."}],"correct":"cli","why":{"ar":"الوحدة تنص على أن موجّه سيسكو يُبرمج من سطر الأوامر عبر نافذة طرفية، حتى لو كانت أنظمة أخرى رسومية.","en":"The unit states that a Cisco router is programmed from the command line in a terminal, even where other systems are graphical."},"impact":{"ar":"الفني الذي لا يعرف الأوامر لا يستطيع اعتماد واجهة المكتب وحدها لهذا الجهاز.","en":"A technician who does not know the commands cannot rely on a desktop interface alone for this device."},"miss":{"ar":"ليست كل الأجهزة رسومية. وقوائم برنامج المكتب تؤدي وظائف ذلك البرنامج لا ضبط التوجيه.","en":"Not every device is graphical. Office menus run that program; they do not configure routing."}},{"id":"a13","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"المطلوب فحص فيروسات، ونسخ احتياطي، وتنظيف ملفات، لا كتابة رسالة.","en":"The need is a virus scan, a backup and file cleanup, not writing a letter."},"choices":[{"key":"util","ar":"برنامج مساعد (utility) لمهام صيانة النظام الروتينية.","en":"Utility software for routine system-maintenance tasks."},{"key":"app","ar":"معالج نصوص، لأن كل برنامج مثبّت يُعد تطبيقاً مكتبياً مهما كانت مهمته.","en":"A word processor, because every installed program counts as an office application whatever it does."},{"key":"os","ar":"نظام التشغيل وحده، لأنه هو الذي يزيل الفيروس وينظّف القرص من دون أداة إضافية.","en":"The operating system alone, because it removes viruses and cleans the disk with no extra tool."}],"correct":"util","why":{"ar":"البرامج المساعدة تعمل مع نظام التشغيل للصيانة: مكافحة الفيروسات، والنسخ، والتنظيف، والضغط.","en":"Utilities work alongside the operating system for upkeep: antivirus, backup, cleanup and compression."},"impact":{"ar":"تحافظ على أداء الجهاز. اختيار برنامج مكتبي لا يؤدي هذه الصيانة.","en":"They keep the device usable. An office program does not do this upkeep."},"miss":{"ar":"معالج النصوص تطبيق لإنشاء المستندات. ونظام التشغيل يدير الجهاز، لكن الفحص والنسخ أدوت مساعدة متخصصة.","en":"A word processor is an application for documents. The operating system runs the device, but scanning and backup are specialist utilities."}},{"id":"a14","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"مكتب هندسي يرسم المخططات المعمارية على الحاسوب.","en":"An engineering office draws architectural plans on the computer."},"choices":[{"key":"cad","ar":"تصميم بمساعدة الحاسوب (CAD) للرسم الفني والهندسي.","en":"Computer-aided design (CAD) for technical and architectural drawing."},{"key":"dbms","ar":"نظام إدارة قواعد بيانات (DBMS)، لأن حفظ المخططات يجعلها قاعدة بيانات.","en":"A database management system (DBMS), because saving the plans makes them a database."},{"key":"erp","ar":"تخطيط موارد المؤسسة (ERP)، لأن الرسم جزء من شراء المخزون وبيعه.","en":"Enterprise resource planning (ERP), because drawing is part of buying and selling stock."}],"correct":"cad","why":{"ar":"CAD للرسم الفني والتصميم المعماري. DBMS يدير بيانات منظمة، وERP يربط الشراء والمبيعات والمخزون والحسابات.","en":"CAD is for technical drawing and architectural design. A DBMS manages organised data, and ERP links purchasing, sales, stock and accounts."},"impact":{"ar":"المخطط الدقيق أداة المهندس. وضعه في برنامج محاسبة أو قاعدة عملاء لا ينتج الرسم.","en":"An accurate plan is the engineer’s tool. An accounts package or a customer database does not produce the drawing."},"miss":{"ar":"حفظ الملف لا يحوّل برنامج الرسم إلى قاعدة بيانات. وتخطيط الموارد قد يخزّن طلب المشروع لا أن يرسم الجدار.","en":"Saving a file does not turn drawing software into a database. ERP may store the project order; it does not draw the wall."}},{"id":"a15","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"موظفتان في مدينتين تعدّلان جدول المبيعات نفسه في اللحظة نفسها وعلى نسخة واحدة.","en":"Two employees in different cities edit the same sales spreadsheet at the same time, on one copy."},"choices":[{"key":"comp","ar":"حوسبة سحابية: التطبيق يعمل عبر الخادم ويسمح بالتحرير المتزامن.","en":"Cloud computing: the application runs through the server and allows editing at the same time."},{"key":"store","ar":"تخزين سحابي فقط: رفع الملف وإرسال الرابط يكفي ليكتبا معاً في اللحظة نفسها.","en":"Cloud storage only: uploading the file and sending the link is enough for them to type together at the same time."},{"key":"vpn","ar":"شبكة افتراضية خاصة (VPN) تجعل ملف سطح المكتب يُحرَّر من شخصين بلا تطبيق سحابي.","en":"A virtual private network (VPN) lets two people edit one desktop file with no cloud application."}],"correct":"comp","why":{"ar":"التحرير المتزامن ميزة الحوسبة السحابية. التخزين يشارك ملفاً، والشبكة الافتراضية توصل الموظف بشبكة المكتب ولا تدمج كتابتهما تلقائياً.","en":"Editing at the same time is a feature of cloud computing. Storage shares a file, and a VPN connects someone to the office network; it does not merge their typing by itself."},"impact":{"ar":"تبقى نسخة واحدة بدل ملفات متضاربة تُرسل بالبريد.","en":"One copy remains, instead of conflicting files sent by email."},"miss":{"ar":"رابط التخزين غالباً يعني أن أحدهما يفتح الملف والآخر ينتظر أو ينسخ نسخة. والـVPN لا يستبدل تطبيق التحرير المشترك.","en":"A storage link often means one person opens the file while the other waits or takes a copy. A VPN does not replace a shared editing application."}},{"id":"a16","lo":"A","code":{"ar":"أ.ب1 · البرمجيات","en":"A.P1 · Software"},"scenario":{"ar":"ستُرسل الصورة بالبريد ولن تُعدَّل لاحقاً، والمهم أن تبقى الرسالة صغيرة.","en":"The photo will be emailed and will not be edited later. The message needs to stay small."},"choices":[{"key":"jpg","ar":"JPEG: يُضغط مع فقدان بعض البيانات فيصغر حجمه ويفتح في أغلب البرامج.","en":"JPEG: it is compressed with some data loss, so it is smaller and opens in most programs."},{"key":"raw","ar":"RAW غير المضغوط، لأنه الأدق والأصغر حين يُرفق بالبريد.","en":"Uncompressed RAW, because it is the most accurate and the smallest email attachment."},{"key":"tiff","ar":"TIFF، لأن الاحتفاظ بالجودة من دون فقد يعني حجماً أصغر من JPEG.","en":"TIFF, because keeping quality without loss means a smaller file than JPEG."}],"correct":"jpg","why":{"ar":"JPEG مناسب للمرفق لأنه مضغوط. RAW كبير ويحتاج برنامجاً خاصاً للتعديل، وTIFF يحافظ على الجودة لكنه ليس الأصغر ولا يفتح في كل برنامج.","en":"JPEG suits an attachment because it is compressed. RAW is large and needs special software for editing. TIFF keeps quality, but it is not the smallest and does not open everywhere."},"impact":{"ar":"تصل الرسالة. اختيار ملف تحرير ضخم قد يمنع الإرسال أو يملأ صندوق المستلم.","en":"The message gets through. A huge editing file may block sending or fill the recipient’s mailbox."},"miss":{"ar":"RAW للمحترف الذي سيعدّل الصورة لا للبريد السريع. وغياب الفقد لا يعني حجماً أصغر.","en":"RAW is for a specialist who will edit the photo, not for a quick email. Lack of loss does not mean a smaller file."}},{"id":"a17","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"شخص يربط هاتفه وحاسوبه المحمول وسماعته اللاسلكية حوله.","en":"One person links a phone, a laptop and wireless headphones around themselves."},"choices":[{"key":"pan","ar":"شبكة منطقة شخصية (PAN)، وغالباً بالبلوتوث لمسافة قصيرة.","en":"A personal area network (PAN), often over Bluetooth for a short distance."},{"key":"lan","ar":"شبكة منطقة محلية (LAN)، لأن أي ربط لاسلكي داخل الغرفة شبكة مبنى.","en":"A local area network (LAN), because any wireless link in a room is a building network."},{"key":"wan","ar":"شبكة منطقة واسعة (WAN)، لأن السماعة قد تُستخدم خارج البيت فتصبح الشبكة واسعة.","en":"A wide area network (WAN), because the headphones may be used outdoors so the network is wide."}],"correct":"pan","why":{"ar":"الـPAN شبكة أجهزة الشخص نفسه على مدى قصير. الـLAN لمبنى أو موقع تملكه المؤسسة، والـWAN لمسافات أوسع عبر مزود اتصالات.","en":"A PAN is one person’s devices over a short range. A LAN is a building or site the organisation owns. A WAN covers longer distances through a telecoms provider."},"impact":{"ar":"لا تحتاج هذه السماعة إلى بنية مبنى ولا إلى اشتراك شبكة واسعة.","en":"These headphones do not need a building’s infrastructure or a wide-area subscription."},"miss":{"ar":"وجود لاسلكي لا يجعل كل شبكة LAN. والخروج من الغرفة لا يحوّل سماعة البلوتوث إلى WAN.","en":"Wireless does not make every network a LAN. Stepping outside does not turn Bluetooth headphones into a WAN."}},{"id":"a18","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"المدرسة تملك الأكبال والمبدّلات داخل المبنى وتربط أجهزة المختبر بعضها ببعض.","en":"The school owns the cables and switches inside the building and links the lab computers together."},"choices":[{"key":"lan","ar":"شبكة منطقة محلية (LAN): الاتصال والبنية داخل موقع المؤسسة.","en":"A local area network (LAN): the links and infrastructure inside the organisation’s site."},{"key":"wan","ar":"شبكة واسعة، لأن كبل الإنترنت يدخل المبنى فتصبح شبكة المدرسة WAN.","en":"A wide area network, because an internet cable enters the building so the school network is a WAN."},{"key":"vpn","ar":"شبكة افتراضية خاصة، لأن كلمة مرور الواي فاي تجعل الشبكة VPN.","en":"A virtual private network, because a Wi-Fi password makes the network a VPN."}],"correct":"lan","why":{"ar":"إذا كانت المؤسسة تملك روابط الموقع الصغير فهي LAN. الإنترنت قد يمر عبرها، لكن ذلك لا يغيّر ملكية شبكة المبنى.","en":"If the organisation owns the links on a small site, it is a LAN. The internet may pass through it; that does not change ownership of the building network."},"impact":{"ar":"تتحكم المدرسة بأجهزتها الداخلية وتشارك الطابعة والملفات محلياً.","en":"The school controls its internal devices and can share a printer and files locally."},"miss":{"ar":"الـWAN تستخدم بنية مزود الاتصالات لمسافة أوسع. والـVPN نفق آمن عبر شبكة عامة ليصل البعيد إلى الشبكة المحلية، لا اسم لكلمة مرور الواي فاي.","en":"A WAN uses a provider’s infrastructure over a wider distance. A VPN is a secure tunnel over a public network so a remote person can reach the LAN, not a name for a Wi-Fi password."}},{"id":"a19","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"المحاسبة تعمل من البيت وتحتاج أن تصبح داخل شبكة المكتب وجدار الحماية، والخوادم في مبنى الشركة.","en":"An accountant works from home and must be inside the office network and firewall. The servers are in the company’s building."},"choices":[{"key":"vpn","ar":"شبكة افتراضية خاصة (VPN) تنشئ نفقاً عبر الإنترنت إلى الشبكة المحلية.","en":"A virtual private network (VPN) that creates a tunnel over the internet into the local network."},{"key":"cloud","ar":"تخزين سحابي، لأن أي وصول بعيد إلى ملف هو VPN بذاته.","en":"Cloud storage, because any remote opening of a file is itself a VPN."},{"key":"wan","ar":"اشتراك WAN فقط، لأن دفع فاتورة المزود يساوي نفقاً خاصاً إلى خادم المكتب.","en":"A WAN subscription only, because paying the provider equals a private tunnel to the office server."}],"correct":"vpn","why":{"ar":"الـVPN تجعل البعيد جزءاً من الـLAN عبر نفق، والخوادم هنا مادية في الشركة لا خدمة سحابية عامة.","en":"A VPN makes a remote user part of the LAN through a tunnel. Here the servers are physical, on the company’s site, not a general cloud service."},"impact":{"ar":"تستفيد من جدار الحماية والسياسات كأنها في المكتب، مع بقاء الملفات على خوادم المؤسسة.","en":"She gets the firewall and the policies as if she were in the office, while files stay on the organisation’s servers."},"miss":{"ar":"التخزين السحابي يضع الملف عند مزود خارجي. واشتراك الشبكة الواسعة وسيلة نقل عامة، لا دخولاً محمياً إلى شبكة المكتب وحده.","en":"Cloud storage puts the file with an outside provider. A wide-area subscription is shared transport, not protected entry into the office network alone."}},{"id":"a20","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"عمال المستودع يمشون بين الرفوف بأجهزة يدوية لالتقاط الطلبات.","en":"Warehouse staff walk the aisles with handhelds to pick orders."},"choices":[{"key":"wifi","ar":"واي فاي (Wi-Fi): لاسلكي يناسب من لا مكتب ثابتاً له.","en":"Wi-Fi: wireless, for people who have no fixed desk."},{"key":"fibre","ar":"ليف ضوئي إلى كل جهاز يدوي، لأنه الأسرع فهو الأنسب لمن يمشي.","en":"Fibre to each handheld, because it is the fastest and therefore best for people who walk."},{"key":"copper","ar":"إيثرنت نحاسي يحمله العامل، لأن الكبل أثبت والسرعة هنا أهم من الحركة.","en":"Copper Ethernet that the worker carries, because a cable is steadier and speed matters more than movement."}],"correct":"wifi","why":{"ar":"الوحدة تخص المستودع المتحرك بالواي فاي، وتخص الألياف بمكاتب تحرير الفيديو الثابتة، والنحاس بحل وسط لأجهزة مكتبية.","en":"The unit gives walking warehouse work to Wi-Fi, fibre to fixed high-end video desks, and copper as a compromise for desktop PCs."},"impact":{"ar":"يتحرك العامل مع الجهاز. الكبل يعيقه ويعرقل الممرات.","en":"The worker moves with the device. A cable gets in the way and blocks aisles."},"miss":{"ar":"الألياف ممتازة للمكتب الثابت لا لجهاز في اليد. والنحاس موثوق على المكتب، لكنه لا يُحمل بين الرفوف.","en":"Fibre is excellent at a fixed desk, not in the hand. Copper is reliable at a desk; it is not carried between shelves."}},{"id":"a21","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"الليف يصل إلى الخزانة في الشارع، والمتر الأخير حتى المحل ما زال نحاساً.","en":"Fibre reaches the street cabinet, and the last stretch into the shop is still copper."},"choices":[{"key":"fttc","ar":"ألياف إلى الخزانة (FTTC): الليف للخزانة ثم نحاس إلى المبنى.","en":"Fibre to the cabinet (FTTC): fibre to the cabinet, then copper into the building."},{"key":"fttp","ar":"ألياف إلى المبنى (FTTP)، لأن أي ليف في المسار يعني أن الليف وصل إلى المحل.","en":"Fibre to the premises (FTTP), because any fibre on the route means fibre has reached the shop."},{"key":"g5","ar":"جيل خامس (5G)، لأن ما هو أسرع من النحاس القديم لا بد أن يكون شبكة هاتف محمول.","en":"5G, because anything faster than old copper must be a mobile-phone network."}],"correct":"fttc","why":{"ar":"FTTC يقف الليف عند الخزانة ويكمل النحاس. FTTP يوصل الليف حتى المبنى وهو أسرع. والجيل الخامس شبكة متنقلة لا وصف هذا الكبل.","en":"FTTC stops the fibre at the cabinet and finishes on copper. FTTP brings fibre into the building and is faster. 5G is a mobile network, not a description of this cable."},"impact":{"ar":"يتوقع المحل سرعة أعلى من النحاس الكامل، وأقل مما لو وصل الليف إلى داخله.","en":"The shop should expect more speed than all-copper, and less than if fibre entered the building."},"miss":{"ar":"وجود ليف في الشارع لا يعني FTTP. وتحسن السرعة لا يحوّل الكبل إلى جيل هاتف.","en":"Fibre in the street is not FTTP. A speed gain does not turn the cable into a mobile generation."}},{"id":"a22","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"قسمان على شبكتين مختلفتين يحتاجان كلاهما إلى الإنترنت وإلى تبادل البيانات بينهما.","en":"Two departments on different networks both need the internet and need to exchange data."},"choices":[{"key":"router","ar":"موجّه (router) يصل الشبكات بعضها ببعض وبالإنترنت.","en":"A router joins the networks to each other and to the internet."},{"key":"switch","ar":"مبدّل (switch) يكفي، لأنه ينقل الإطارات فهو يصل شبكتين بعناوين مختلفة.","en":"A switch is enough, because it forwards frames so it joins two networks with different addresses."},{"key":"wap","ar":"نقطة وصول لاسلكية (WAP)، لأن قوة الإشارة تعني أن الشبكتين أصبحتا واحدة.","en":"A wireless access point (WAP), because signal strength means the two networks have become one."}],"correct":"router","why":{"ar":"الموجّه يربط الشبكات بالإنترنت وببعضها. المبدّل يوصل أجهزة داخل الشبكة نفسها. ونقطة الوصول تمد الواي فاي ولا تدمج شبكتين.","en":"A router connects networks to the internet and to each other. A switch joins devices inside one network. An access point extends Wi-Fi; it does not merge two networks."},"impact":{"ar":"من دون موجّه يبقى كل قسم جزيرة حتى لو كثرت المبدّلات داخله.","en":"Without a router each department stays an island, however many switches it has inside."},"miss":{"ar":"كثرة المنافذ ليست توجيهاً بين الشبكات. وتغطية الواي فاي لا تستبدل الموجّه.","en":"More ports are not routing between networks. Wi-Fi coverage does not replace a router."}},{"id":"a23","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"برنامج البريد ينزّل الرسائل ويزيلها من الخادم بعد التنزيل.","en":"The mail program downloads messages and then removes them from the server."},"choices":[{"key":"pop","ar":"بروتوكول مكتب البريد الإصدار 3 (POP3) لاسترجاع البريد وحذفه من الخادم.","en":"Post Office Protocol version 3 (POP3), which retrieves mail and removes it from the server."},{"key":"imap","ar":"بروتوكول الوصول إلى رسائل الإنترنت (IMAP)، لأن القراءة من الهاتف تبقي الرسالة حتى لو حُذفت من الخادم.","en":"Internet Message Access Protocol (IMAP), because reading on a phone keeps the message even if it is deleted from the server."},{"key":"smtp","ar":"بروتوكول نقل البريد البسيط (SMTP)، لأن الإرسال والاستقبال بروتوكول واحد.","en":"Simple Mail Transfer Protocol (SMTP), because sending and receiving are one protocol."}],"correct":"pop","why":{"ar":"POP3 يسحب البريد إلى الجهاز ويزيله من الخادم. IMAP يتركه على الخادم للوصول من أجهزة عدة. SMTP لنقل الرسالة إلى الخادم.","en":"POP3 pulls mail onto the device and removes it from the server. IMAP leaves it on the server for several devices. SMTP carries a message to a server."},"impact":{"ar":"تختفي الرسالة من الأجهزة الأخرى بعد التنزيل. إن أرادت المؤسسة بقاءها للجميع فـIMAP أنسب.","en":"The message disappears from other devices after download. If the organisation wants it left for everyone, IMAP fits better."},"miss":{"ar":"IMAP لا يحذف كسلوكه الأساسي. وSMTP لا يجلب صندوق الوارد.","en":"IMAP does not delete as its basic behaviour. SMTP does not fetch the inbox."}},{"id":"a24","lo":"A","code":{"ar":"أ.ب3 · الشبكات","en":"A.P3 · Networks"},"scenario":{"ar":"العميل يدخل إلى صفحة البنك ليحول مبلغاً، والعنوان يبدأ بـhttps ورمز قفل.","en":"A customer opens the bank’s page to transfer money. The address starts with https and shows a lock."},"choices":[{"key":"https","ar":"بروتوكول نقل النص التشعبي الآمن (HTTPS) مع تشفير طبقة النقل (TLS).","en":"Hypertext Transfer Protocol Secure (HTTPS) with Transport Layer Security (TLS) encryption."},{"key":"http","ar":"HTTP العادي، لأن القفل رسم فقط والنص ما زال يمرّ بلا تشفير.","en":"Ordinary HTTP, because the lock is only a picture and the text still travels with no encryption."},{"key":"ftp","ar":"بروتوكول نقل الملفات (FTP)، لأن رصيد الحساب ملف يُنقل بين جهازين.","en":"File Transfer Protocol (FTP), because an account balance is a file moved between two devices."}],"correct":"https","why":{"ar":"HTTPS هو HTTP الآمن، ويستخدم SSL أو TLS وتشفير المفتاح العام. الصفحة البنكية مثال الوحدة عليه.","en":"HTTPS is the secure form of HTTP. It uses SSL or TLS and public-key encryption. The unit gives banking pages as the example."},"impact":{"ar":"يصعب على من يمر في الطريق قراءة رقم البطاقة. القفل ليس زينة إن كانت الشهادة سليمة.","en":"Someone on the path cannot easily read the card number. The lock is not decoration when the certificate is valid."},"miss":{"ar":"HTTP بلا الحرف الإضافي غير مناسب للبيانات الحساسة. وFTP لنقل الملفات إلى خادم، لا لتصفح حساب بنكي.","en":"HTTP without the extra secure step is not suitable for sensitive data. FTP moves files to a server; it is not how a bank account is browsed."}},{"id":"b01","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"لديها أرقام مبيعات خام، وتريد أن تعرف هل تطلب كمية أكبر من منتج.","en":"She has raw sales figures and wants to know whether to order more of a product."},"choices":[{"key":"info","ar":"الأرقام بيانات، وتصير معلومات بعد تنظيمها ومعالجتها لاتخاذ القرار.","en":"The figures are data. They become information once they are organised and processed for a decision."},{"key":"same","ar":"البيانات والمعلومات اسمان لشيء واحد، فالرقم وحده قرار.","en":"Data and information are two names for the same thing, so the figure itself is the decision."},{"key":"swap","ar":"المعلومة هي الرقم الخام، والبيان هو القرار الذي يُتخذ بعده.","en":"Information is the raw figure, and data is the decision that follows it."}],"correct":"info","why":{"ar":"البيانات خام. معالجتها وتنظيمها ينتج معلومات تُستخدم في القرار.","en":"Data is raw. Processing and organising it produces information used for a decision."},"impact":{"ar":"طلب البضاعة من رقم غير معالج قد يملأ المستودع أو يفرّغه.","en":"Ordering from an unprocessed figure can fill the stockroom or empty it."},"miss":{"ar":"الرقم قبل المقارنة والاتجاه ليس قراراً. وقلب التعريف يجعل الخام معلومة والخلاصة بياناً.","en":"A figure before comparison and trend is not a decision. Reversing the words makes the raw item information and the conclusion data."}},{"id":"b02","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"جدول المبيعات نفسه يصل إلى المديرة العامة وإلى مشرفة الوردية.","en":"The same sales table reaches the managing director and the shift supervisor."},"choices":[{"key":"level","ar":"تُعالج البيانات نفسها بمعنيين: اتجاه استراتيجي للمديرة، وتشغيل يومي للمشرفة.","en":"The same data can be processed two ways: a strategic trend for the director, and daily operations for the supervisor."},{"key":"only","ar":"المديرة وحدها ترى الجدول، والمشرفة تحتاج مصدراً مختلفاً تماماً.","en":"Only the director may see the table. The supervisor needs an entirely different source."},{"key":"flip","ar":"المشرفة تأخذ الاتجاه السنوي، والمديرة تأخذ عدّ الصندوق في كل ساعة.","en":"The supervisor takes the yearly direction, and the director takes the hourly till count."}],"correct":"level","why":{"ar":"المستوى الإستراتيجي يقرأ الاتجاه والرؤية، والتشغيلي يدير اليوم. المصدر قد يكون واحداً والمعالجة تختلف.","en":"Strategy reads direction and vision. Operations run the day. The source can be the same while the processing differs."},"impact":{"ar":"لا تُبنى سياسة العام على قراءة وردية واحدة، ولا تُدار الوردية بتقرير سنوي فقط.","en":"A year’s policy is not built on one shift, and a shift is not run from a yearly report alone."},"miss":{"ar":"إخفاء الجدول عن المشرفة يمنعها من عملها. وقلب المستويين يعطي كل واحدة ما لا تحتاجه ساعتها.","en":"Hiding the table from the supervisor blocks her job. Swapping the levels gives each person what she does not need at that moment."}},{"id":"b03","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"مخبز منزلي صغير يريد متابعة الزبائن والمخزون من دون نظام مخصص باهظ.","en":"A small home bakery wants to track customers and stock without an expensive custom system."},"choices":[{"key":"general","ar":"يبدأ بحزم عامة مثل جداول البيانات ومعالج النصوص، وقد تكفي قاعدة بسيطة.","en":"Start with general packages such as a spreadsheet and a word processor. A simple database may be enough."},{"key":"custom","ar":"المشروع الصغير يبدأ بنظام مخصص، لأن قلة البيانات أصعب من كثرتها.","en":"A small venture starts with a custom system, because a little data is harder than a lot."},{"key":"exceldb","ar":"جدول البيانات هو نظام إدارة قواعد بيانات، فيغني عن أي تصميم لاحقاً مهما كبر العمل.","en":"A spreadsheet is a database management system, so it removes any later design however large the work grows."}],"correct":"general","why":{"ar":"المؤسسات الصغيرة تعتمد غالباً برامج عامة. المؤسسات الكبيرة تستثمر في أنظمة متخصصة أو مخصصة حين تكبر الحاجة.","en":"Small organisations often rely on general software. Large ones invest in specialist or custom systems when the need grows."},"impact":{"ar":"ينفق المخبز على الخبز لا على نظام يفوق حجمه، ويترك باب التطوير مفتوحاً.","en":"The bakery spends on bread, not on a system larger than the business, and can still develop later."},"miss":{"ar":"التخصيص منذ اليوم الأول تكلفة بلا حجم يبررها. والجدول ليس قاعدة بيانات علائقية كاملة.","en":"A custom build on day one is a cost the size does not justify. A spreadsheet is not a full relational database."}},{"id":"b04","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"تريد تقليل زمن الإنتاج وربط طلب الزبون بتوريد القطعة، وتبني ذلك في جدول بيانات.","en":"She wants to shorten production time and link a customer order to the part supply, and she builds this in a spreadsheet."},"choices":[{"key":"jit","ar":"هذا منطق «في الوقت المحدد»، وصحة المعادلات شرط لصحة المعلومة.","en":"This is the logic of just-in-time, and the formulas must be right or the information is wrong."},{"key":"late","ar":"في الوقت المحدد يعني تأخير التوريد عمداً لتوفير موظفي المستودع.","en":"Just-in-time means delaying supply on purpose to save warehouse staff."},{"key":"paper","ar":"في الوقت المحدد دفتر ورقي فقط، فلا يُبنى في جدول بيانات.","en":"Just-in-time is only a paper diary, so it cannot be built in a spreadsheet."}],"correct":"jit","why":{"ar":"النظام يقلل أوقات الإنتاج ويربط الزبائن والموردين. من يصمم معادلات الجدول مسؤول عن دقة الناتج.","en":"The system reduces production time and links customers and suppliers. Whoever designs the spreadsheet formulas is responsible for an accurate result."},"impact":{"ar":"معادلة خاطئة تطلب قطعة ناقصة أو زائدة فيصل الإنتاج متأخراً رغم اسم النظام.","en":"A wrong formula orders too little or too much, so production is late despite the name of the system."},"miss":{"ar":"الهدف تقليل الانتظار لا صنعه. والوحدة تقول إن نموذجاً أساسياً يمكن تصميمه في جدول بيانات.","en":"The aim is to cut waiting, not to create it. The unit says a basic model can be designed in a spreadsheet."}},{"id":"b05","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"يعتمد قرار الشراء على صفحة ويكي بلا مصدر، مع وجود التقرير الأصلي للجهة نفسها.","en":"A buying decision rests on a wiki page with no source, although the organisation’s original report exists."},"choices":[{"key":"direct","ar":"يُفضَّل المصدر الأولي المباشر. الويكي بجودة من كتبه إلى أن تُراجع مصادره.","en":"Prefer the direct primary source. A wiki is only as good as its writers until its sources are checked."},{"key":"third","ar":"نقل شخص ثالث أفضل، لأنه فسّر التقرير وسلّمك الخلاصة.","en":"A third person’s retelling is better, because they interpreted the report and handed you the conclusion."},{"key":"wiki","ar":"الويكي موثوق دائماً لأنه عام ويعدّله كثيرون.","en":"A wiki is always reliable because it is public and many people edit it."}],"correct":"direct","why":{"ar":"الصدق يعتمد جودة المصدر. المصدر المباشر أقوى من التفسير ومن الإشاعة، والويكي يحتاج مصادر أصلية.","en":"Veracity depends on source quality. A direct source is stronger than an interpretation or a rumour, and a wiki needs original sources."},"impact":{"ar":"قرار شراء مبني على صفحة غير مراجعة قد يعتمد رقماً خاطئاً.","en":"A purchase based on an unchecked page may rely on a wrong figure."},"miss":{"ar":"التفسير الثالث يبعدك عن الأصل. وكثرة المحررين لا تثبت الصحة من دون مصدر.","en":"A third-hand interpretation moves you away from the original. Many editors do not prove accuracy without a source."}},{"id":"b06","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"رقم نفاد الصنف وصل بعد أسبوع، فتوقف البيع رغم أن الرقم نفسه كان صحيحاً.","en":"The figure showing an item had run out arrived a week later. Sales stopped even though the figure itself was correct."},"choices":[{"key":"vel","ar":"السرعة: البيان تأخر، فقيمته التشغيلية ضاعت رغم صحته.","en":"Velocity: the data arrived late, so its operational value was lost even though it was correct."},{"key":"vol","ar":"الحجم: التأخر يعني أن البيانات كانت كثيرة جداً.","en":"Volume: the delay means there was too much data."},{"key":"var","ar":"التنوع: رقم واحد متأخر يعني خليطاً من أنواع البيانات.","en":"Variety: one late figure means a mixture of data types."}],"correct":"vel","why":{"ar":"السرعة هي سرعة التولد والوصول. الحجم كمية، والتنوع خليط الأنواع، والصدق الجودة، والقيمة الفائدة.","en":"Velocity is how fast data is created and received. Volume is quantity, variety is the mix of types, veracity is quality, and value is usefulness."},"impact":{"ar":"بيان صحيح ومتأخر قد يساوي بياناً غائباً في قرار إعادة الطلب.","en":"A correct but late figure can be as useless as a missing one when reordering."},"miss":{"ar":"لم تُذكر كثرة ولا تعدد أنواع. الخلل هنا موعد الوصول.","en":"Neither quantity nor a mix of types is described. The fault here is the arrival time."}},{"id":"b07","lo":"B","code":{"ar":"ب.ب5 · المعلومات","en":"B.P5 · Information"},"scenario":{"ar":"زبون ينشر شكواه باسم المتجر على وسيلة تواصل يراها الغرباء.","en":"A customer posts a complaint, naming the shop, on a social network that strangers can see."},"choices":[{"key":"social","ar":"هذا تواصل اجتماعي عام، وقد تلجأ الزبائن إليه للوصول العلني إلى المؤسسة.","en":"This is public social media, and customers use it to reach an organisation in public."},{"key":"im","ar":"رسالة فورية إلى صديق واحد بالأثر نفسه، لأن النص خرج من جهاز الزبون.","en":"An instant message to one friend has the same effect, because the text left the customer’s device."},{"key":"intra","ar":"منتدى إنترانت الشركة، لأن كل صفحة يكتبها زبون شبكة داخلية.","en":"The company’s intranet forum, because every page a customer writes is an internal network."}],"correct":"social","why":{"ar":"وسائل التواصل العامة تمكّن الزبون من مخاطبة المؤسسة أمام الآخرين. الرسالة الخاصة والإنترانت لا تصلان الجمهور نفسه.","en":"Public social media lets a customer address the organisation in front of others. A private message and an intranet do not reach that audience."},"impact":{"ar":"تتسع الشكوى بسرعة، فيلزم المؤسسة متابعة علنية لا الاكتفاء بصندوق داخلي.","en":"The complaint spreads quickly, so the organisation needs a public follow-up, not only an internal inbox."},"miss":{"ar":"الرسالة لصديق تبقى ضيقة. والإنترانت للموظفين المصرح لهم لا للغرباء.","en":"A message to a friend stays narrow. An intranet is for authorised staff, not for strangers."}},{"id":"b08","lo":"B","code":{"ar":"ب.ب5 · المعلومات","en":"B.P5 · Information"},"scenario":{"ar":"تنسخ فقرة من ويكي إلى تقرير الشراء، والصفحة بلا مصادر ويمكن لأي زائر تعديلها.","en":"A paragraph is copied from a wiki into the buying report. The page has no sources and any visitor can edit it."},"choices":[{"key":"check","ar":"لا تُعامل الصفحة كحقيقة تلقائية. الموثوقية تحتاج مصدراً أصلياً.","en":"The page is not automatically fact. Reliability needs an original source."},{"key":"gov","ar":"كل تعديل على الويكي تراجعه جهة حكومية قبل ظهوره.","en":"Every wiki edit is checked by a government body before it appears."},{"key":"crowd","ar":"إذا عدّلها كثيرون فلا يمكن أن تبقى خطأ.","en":"If many people edit it, it cannot still be wrong."}],"correct":"check","why":{"ar":"الويكي جهد جماعي مفتوح. الشهرة لا تغني عن المصدر، وويكيبيديا نفسها تطلب مصادر.","en":"A wiki is an open group effort. Fame does not replace a source, and Wikipedia itself asks for sources."},"impact":{"ar":"تقرير الشراء يحمل خطأ غير موثّق إن بقيت الفقرة بلا إسناد.","en":"The buying report carries an undocumented error if the paragraph stays unsourced."},"miss":{"ar":"لا توجد رقابة حكومية عامة على كل ويكي. والجمهور قد يكرر الخطأ نفسه.","en":"There is no general government check on every wiki. A crowd can repeat the same mistake."}},{"id":"b09","lo":"B","code":{"ar":"ب.ب5 · المعلومات","en":"B.P5 · Information"},"scenario":{"ar":"فريق الدعم يريد نقاشاً يظهر فيه الرد فوراً، لا سلسلة منشورات تُقرأ لاحقاً.","en":"The support team wants a discussion where the reply appears at once, not a chain of posts read later."},"choices":[{"key":"chat","ar":"غرفة دردشة أقرب إلى الوقت الفعلي.","en":"A chat room is closer to real time."},{"key":"forum","ar":"منتدى، لأن بقاء المنشور مرتباً يجعله أسرع من الدردشة.","en":"A forum, because keeping posts in order makes it faster than chat."},{"key":"same","ar":"الاثنان سواء، فكلاهما نص على الإنترنت.","en":"They are the same, because both are text on the internet."}],"correct":"chat","why":{"ar":"الدردشة تفاعل لحظي. المنتدى منشورات يمكن أن يضيع ترتيبها ويُقرأ لاحقاً، فهو ليس الوقت نفسه.","en":"Chat is immediate. A forum is posted, its order can be hard to follow, and it is read later, so it is not the same moment."},"impact":{"ar":"مشكلة الزبون العاجلة تتأخر إن وُضعت في منتدى يُراجع في اليوم التالي.","en":"An urgent customer problem waits if it is placed on a forum that is checked the next day."},"miss":{"ar":"ترتيب المنتدى لا يحوّله إلى لحظة حية. واشتراكهما في النص لا يلغي فرق الزمن.","en":"A forum’s order does not make it live. Sharing the use of text does not remove the difference in time."}},{"id":"b10","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"المتجر يملك قائمة زبائنه التي جمعها بنفسه، ويشتري أيضاً تقريراً جاهزاً عن السوق.","en":"The shop has a customer list it collected itself, and it also buys a ready-made market report."},"choices":[{"key":"both","ar":"قائمته بيانات أولية. التقرير المشترى بيانات ثانوية جمعها غيره.","en":"Its own list is primary data. The bought report is secondary data collected by someone else."},{"key":"allp","ar":"كل ما يظهر على الحاسوب بيانات أولية، سواء جُمع هنا أو شُري.","en":"Everything on a computer is primary data, whether it was collected here or bought."},{"key":"pay","ar":"التقرير المشترى أولي لأن الدفع يثبت أنه جُمع أولاً.","en":"The bought report is primary because payment proves it was collected first."}],"correct":"both","why":{"ar":"الأولي ما تنتجه المؤسسة أو تجمعه. الثانوي ما اشتُري أو جُمع سابقاً على يد غيرهم.","en":"Primary data is what the organisation produces or collects. Secondary data was bought or already collected by others."},"impact":{"ar":"تعرف المؤسسة أي رقم تملكه وأي رقم يعتمد على جهة أخرى قد لا يناسب سوقها.","en":"The organisation knows which figure it owns and which depends on another party that may not match its market."},"miss":{"ar":"مكان التخزين لا يغيّر أصل البيان. والدفع ثمن لا يحوّل عمل غيرك إلى جمعك أنت.","en":"Where it is stored does not change the origin. Payment is a price; it does not turn someone else’s work into your own collection."}},{"id":"b11","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"يريد أرقاماً يقارنها بين الصفوف عن رضا الزبائن، لا انطباعاً جماعياً يصعب قياسه.","en":"He wants figures he can compare across classes about customer satisfaction, not a group impression that is hard to measure."},"choices":[{"key":"quest","ar":"استبيان بدرجات محددة، لأنه أكثر قابلية للقياس من حديث مفتوح.","en":"A questionnaire with fixed ratings, because it is easier to measure than open talk."},{"key":"focus","ar":"مجموعة تركيز، لأن اتفاق الجماعة رقمٌ جاهز للمقارنة.","en":"A focus group, because the group’s agreement is a ready number for comparison."},{"key":"open","ar":"مقابلة مفتوحة بلا سلم، لأن طول الإجابة يجعلها كمية تلقائياً.","en":"An open interview with no scale, because a long answer is automatically quantitative."}],"correct":"quest","why":{"ar":"الاستبيان المنظم يمكن تحويله إلى قياس، مثل درجة من 1 إلى 5. مجموعة التركيز والمقابلة أغنى بالرأي وأصعب في المقارنة الرقمية.","en":"A structured questionnaire can be turned into a measure, such as a score from 1 to 5. A focus group and an interview are richer in opinion and harder to compare as numbers."},"impact":{"ar":"يستطيع مقارنة الفروع. الاتفاق الشفهي قد ينحاز لصوت الأعلى في المجموعة.","en":"He can compare branches. Spoken agreement may lean toward the loudest voice in the group."},"miss":{"ar":"اتفاق المجموعة ليس سلماً رقمياً وقد يتأثر بالانتماء. وطول الكلام لا يجعله كمية.","en":"Group agreement is not a numeric scale and can be pulled by belonging. Length of speech does not make it a quantity."}},{"id":"b12","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"الرمز البريدي مكتوب بشكل سليم، لكنه نُسخ من نموذج زبون آخر.","en":"The postcode is in a valid shape, but it was copied from another customer’s form."},"choices":[{"key":"verify","ar":"التحقق من الصحة قد يقبل شكلاً معقولاً. يلزم التحقق بمقارنة المصدر الأصلي.","en":"Validation may accept a plausible shape. Verification is needed by comparing it with the original source."},{"key":"mask","ar":"قناع الإدخال يرفض كل رمز يخص شخصاً آخر حتى لو كان شكله صحيحاً.","en":"An input mask rejects every code that belongs to someone else, even when its shape is valid."},{"key":"spell","ar":"تدقيق إملاء المدينة هو نفسه التحقق من أن الرمز يعود إلى هذا الزبون.","en":"Spell-checking the city is the same as checking that the code belongs to this customer."}],"correct":"verify","why":{"ar":"التحقق من الصحة يختبر الشكل والمدى والمنطق. التحقق يقارن بالمصدر. الرمز الصحيح شكلاً قد يكون لشخص آخر.","en":"Validation tests format, range and sense. Verification compares with the source. A well-formed code can still belong to someone else."},"impact":{"ar":"الطلب يذهب إلى عنوان معقول لكنه خطأ، فيضيع الشحن.","en":"The order goes to a plausible but wrong address, and the delivery is lost."},"miss":{"ar":"القناع لا يعرف صاحب النموذج. وتدقيق الإملاء لا يطابق الرمز بالنموذج الأصلي.","en":"A mask does not know who owned the form. A spell-check does not match the code to the original form."}},{"id":"b13","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"يوجد استعلام محفوظ لمن اشترى في آب، وتريد إضافة شرط المدينة من دون إعادة بناء القاعدة.","en":"A saved query already finds who bought in August. She wants to add the city without rebuilding the database."},"choices":[{"key":"nest","ar":"استعلام جديد يستخدم الاستعلام المحفوظ ثم يضيّق النتيجة بالمدينة.","en":"A new query uses the saved query, then narrows the result by city."},{"key":"filter","ar":"عامل تصفية واحد يطبّق الشهر والمدينة وشرطاً ثالثاً معاً دفعة واحدة.","en":"One filter applies the month, the city and a third condition all at once."},{"key":"rebuild","ar":"كل سؤال جديد يعني إعادة إنشاء قاعدة البيانات من الصفر.","en":"Every new question means creating the database again from scratch."}],"correct":"nest","why":{"ar":"التصفية البسيطة معيار واحد. تعدد المعايير يحتاج استعلاماً، ويمكن بناء استعلام على استعلام محفوظ.","en":"A simple filter is one criterion. Several criteria need a query, and a query can be built on a saved query."},"impact":{"ar":"تصل إلى زبائن المدينة في ذلك الشهر من دون تكرار العمل أو مخاطرة الجداول.","en":"She reaches that city’s customers for that month without repeating the work or risking the tables."},"miss":{"ar":"التصفية لا تكدّس عدة معايير معقدة كما يفعل الاستعلام. وإعادة بناء القاعدة تهدد البيانات من أجل سؤال.","en":"A filter does not stack complex criteria the way a query does. Rebuilding the database risks the data for the sake of one question."}},{"id":"b14","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"يريد توقع التدفق النقدي بمعادلات، لا رسم هيكل جداول قاعدة البيانات.","en":"He wants to forecast cash flow with formulas, not to draw the structure of database tables."},"choices":[{"key":"num","ar":"نمذجة عددية: نموذج رياضي ومعادلات للتوقع.","en":"Numerical modelling: a mathematical model and formulas for the forecast."},{"key":"data","ar":"نمذجة بيانات، لأن أي جدول فيه مال هو نموذج عددي.","en":"Data modelling, because any table that contains money is a numerical model."},{"key":"chart","ar":"الرسم البياني هو النموذج، حتى قبل وجود معادلة.","en":"The chart is the model, even before a formula exists."}],"correct":"num","why":{"ar":"النمذجة العددية حساب وتوقع. نمذجة البيانات صورة مفاهيمية لمعنى البيانات قبل بناء القاعدة.","en":"Numerical modelling is calculation and forecast. Data modelling is a conceptual picture of what the data means before the database is built."},"impact":{"ar":"معادلة التدفق تخدم قرار المال. مخطط الجداول يخدم تصميم القاعدة لا التوقع وحده.","en":"A cash-flow formula serves a money decision. A table diagram serves database design, not the forecast by itself."},"miss":{"ar":"وجود أرقام لا يجعل تصميم القاعدة نمذجة عددية. والرسم يعرض ناتجاً ولا يحسب التدفق قبل المعادلة.","en":"The presence of numbers does not make a database design numerical modelling. A chart displays a result; it does not calculate the flow before a formula."}},{"id":"b15","lo":"B","code":{"ar":"ب.ب4 · البيانات","en":"B.P4 · Data"},"scenario":{"ar":"اسم الزبون وعنوانه يتكرران في كل صف طلب، وصار الملف صعب الصيانة.","en":"The customer’s name and address repeat on every order row, and the file is becoming hard to maintain."},"choices":[{"key":"rel","ar":"فصل البيانات في جداول مرتبطة يقلل التكرار ويبقي الربط.","en":"Splitting the data into related tables reduces repetition and keeps the link."},{"key":"flat","ar":"جدول أعرض من ملف مسطح واحد أكفأ دائماً من الجداول المرتبطة.","en":"One wider flat file is always more efficient than related tables."},{"key":"report","ar":"تغيير شكل التقرير يزيل التكرار من البيانات المخزنة.","en":"Changing the report layout removes the repetition from the stored data."}],"correct":"rel","why":{"ar":"القاعدة الفعالة تقسم البيانات إلى جداول تترابط لتخفيف التكرار. الملف المسطح جدول واحد يصعب حين يكبر.","en":"An effective database splits data into tables that link, which cuts repetition. A flat file is one table and becomes awkward as it grows."},"impact":{"ar":"تعديل العنوان مرة واحدة بدل تصحيحه في كل طلب قديم.","en":"The address is corrected once, instead of in every old order."},"miss":{"ar":"توسيع الملف المسطح يزيد التكرار. والتقرير يعرض ولا يغيّر طريقة التخزين.","en":"Widening the flat file increases repetition. A report displays; it does not change how the data is stored."}},{"id":"b16","lo":"B","code":{"ar":"ب.ب5 · المعلومات","en":"B.P5 · Information"},"scenario":{"ar":"موظفو الإدخال يسجّلون زبائناً جدداً، ولا يجوز أن يحذفوا الجداول الخام بالخطأ.","en":"Data-entry staff record new customers, and they must not delete the raw tables by mistake."},"choices":[{"key":"front","ar":"يعملون من الواجهة الأمامية ولوحة الإدخال، وتُحمى الجداول الخلفية.","en":"They work from the front end and the entry screen. The back-end tables stay protected."},{"key":"back","ar":"يُمنحون الجداول الخلفية مباشرة، لأن الكتابة هناك أسرع.","en":"They are given the back-end tables directly, because typing there is faster."},{"key":"rep","ar":"يكتبون السجل الجديد داخل التقرير المطبوع.","en":"They type the new record into the printed report."}],"correct":"front","why":{"ar":"الجداول الخام واجهة خلفية تُحمى. العمل اليومي يتم من الواجهة الأمامية حتى لا يُحذف السجل بسهولة.","en":"The raw tables are the back end and are protected. Daily work is done from the front end so a record is not easily deleted."},"impact":{"ar":"يقل خطر مسح قاعدة الزبائن أثناء إدخال اسم جديد.","en":"The risk of wiping the customer database while typing a new name falls."},"miss":{"ar":"سرعة الكتابة في الجدول الخام لا تستاهل فتح الحذف للجميع. والتقرير ناتج للعرض لا شاشة إدخال.","en":"Faster typing in the raw table is not worth opening delete rights to everyone. A report is an output for display, not an entry screen."}},{"id":"c01","lo":"C","code":{"ar":"ج.ب6 · التهديدات","en":"C.P6 · Threats"},"scenario":{"ar":"تستخدم كلمة سر هي اسم قطتها، وهي نفسها في البريد والمتجر والبنك.","en":"She uses her cat’s name as the password, and it is the same for email, the shop and the bank."},"choices":[{"key":"weak","ar":"هذا يعرّض البيانات: الكلمة شائعة ومكررة بين الحسابات.","en":"This exposes the data: the word is obvious and reused across accounts."},{"key":"long","ar":"تبقى آمنة إذا كان اسم القطة طويلاً، فالطول وحده يمنع التخمين.","en":"It stays safe if the cat’s name is long, because length alone stops guessing."},{"key":"one","ar":"توحيد الكلمة على كل الحسابات أأمن، حتى لا تُقفل خارج النظام بالنسيان.","en":"Using one word for every account is safer, so she is not locked out by forgetting."}],"correct":"weak","why":{"ar":"الوحدة تعدّ الاسم الأليف والتاريخ وتكرار كلمة السر نفسها بين المواقع طرقاً شائعة لتعريض البيانات.","en":"The unit treats a pet’s name, a date, and the same password on many sites as common ways to expose data."},"impact":{"ar":"سقوط حساب واحد يفتح الباقي، بما فيها البنك.","en":"The fall of one account opens the rest, including the bank."},"miss":{"ar":"الطول من دون تنويع أحرف وأرقام ورموز لا يكفي، والاسم ما زال يُخمَن. وتوحيد الكلمة يوسّع الخرق بدل أن يضيّقه.","en":"Length without a mix of letters, numbers and symbols is not enough, and a name can still be guessed. Reuse widens a breach instead of narrowing it."}},{"id":"c02","lo":"C","code":{"ar":"ج.ب6 · التهديدات","en":"C.P6 · Threats"},"scenario":{"ar":"تُشفَّر ملفات الشركة وتظهر رسالة تطلب مالاً لإعادتها.","en":"The company’s files are encrypted and a message demands money to return them."},"choices":[{"key":"rw","ar":"برمجية ابتزاز (ransomware): تشفّر البيانات وتطلب فدية.","en":"Ransomware: it encrypts the data and demands a ransom."},{"key":"virus","ar":"فيروس ينتقل بالقرص فقط، والتشفير هنا عطل عادي بلا طلب مال.","en":"A virus that spreads only by disk, and the encryption here is an ordinary fault with no demand for money."},{"key":"phish","ar":"تصيّد، لأن رسالة تطلب شيئاً تكفي ولو بقيت الملفات مفتوحة.","en":"Phishing, because a message that asks for something is enough even if the files stay open."}],"correct":"rw","why":{"ar":"الفدية شكل من البرمجيات الضارة يشفّر ثم يطلب مالاً لفك التشفير. التصيّد يحتال لانتزاع معلومة، والفيروس قد يتلف وينتشر بلا هذا الطلب.","en":"Ransomware is malware that encrypts and then demands money to decrypt. Phishing tricks someone into giving information. A virus may damage and spread without this demand."},"impact":{"ar":"يتوقف العمل إلى أن تُستعاد نسخة احتياطية سليمة، والدفع لا يضمن الإعادة.","en":"Work stops until a sound backup is restored. Paying does not guarantee the return."},"miss":{"ar":"ليس كل فيروس يطلب فدية. والتصيّد لا يشفّر القرص بمجرد وصول رسالة.","en":"Not every virus demands a ransom. Phishing does not encrypt the disk merely because a message arrived."}},{"id":"c03","lo":"C","code":{"ar":"ج.ب6 · التهديدات","en":"C.P6 · Threats"},"scenario":{"ar":"تعاقدت المؤسسة مع مختص ليختبر دفاعاتها بإذن، ومن دون نية إضرار.","en":"The organisation hires a specialist to test its defences, with permission and with no intention to harm."},"choices":[{"key":"white","ar":"قرصان قبعة بيضاء: بإذن ومن دون قصد الإضرار.","en":"A white-hat hacker: with permission and without intent to harm."},{"key":"grey","ar":"قبعة رمادية، لأن الاختبار بلا أمر من الشرطة يعني أنه بلا إذن.","en":"A grey hat, because a test without a police order means there is no permission."},{"key":"black","ar":"قبعة سوداء، لأن محاولة الدخول خبيثة حتى لو وُجد عقد.","en":"A black hat, because trying to get in is malicious even when a contract exists."}],"correct":"white","why":{"ar":"القبعة البيضاء مأذونة ولا تقصد الضرر. الرمادية لا تقصد الضرر لكنها بلا إذن. السوداء بلا إذن وتقصد الضرر.","en":"White hat is permitted and does not mean harm. Grey hat does not mean harm but has no permission. Black hat has no permission and means harm."},"impact":{"ar":"الاختبار المأذون يكشف الثغرة قبل أن يستغلها من يريد الضرر.","en":"A permitted test shows the weakness before someone who wants to cause harm uses it."},"miss":{"ar":"إذن المؤسسة هو الإذن، لا يشترط أمر شرطة في تعريف الوحدة. والعقد ينفي وصف السوداء.","en":"The organisation’s permission is the permission. The unit’s definition does not require a police order. A contract rules out the black hat."}},{"id":"c04","lo":"C","code":{"ar":"ج.ب6 · التهديدات","en":"C.P6 · Threats"},"scenario":{"ar":"تصل رسالة تدّعي أنها من البنك وتطلب رقم البطاقة عبر رابط.","en":"A message arrives claiming to be from the bank and asking for the card number through a link."},"choices":[{"key":"phish","ar":"تصيّد: انتحال جهة موثوقة لسحب بيان حساس.","en":"Phishing: pretending to be a trusted party to obtain a sensitive detail."},{"key":"rw","ar":"فدية، لأن طلب السر يعني أن القرص سيُشفَّر حتماً.","en":"Ransomware, because asking for a secret means the disk will certainly be encrypted."},{"key":"acc","ar":"تلف عرضي، لأن النقر بالخطأ يعني أن البنك هو المرسل حقاً.","en":"Accidental damage, because a mistaken click means the bank really sent it."}],"correct":"phish","why":{"ar":"التصيّد ادعاء احتيالي عبر البريد أو الهاتف لانتزاع بيانات شخصية أو مالية، وغالباً بانتحال بنك.","en":"Phishing is a fraudulent claim by email or phone to obtain personal or financial data, often by pretending to be a bank."},"impact":{"ar":"تسليم الرقم يمكّن السحب. الرسالة وحدها لم تشفّر الملفات.","en":"Handing over the number enables theft. The message alone has not encrypted the files."},"miss":{"ar":"الفدية تقفل الملفات وتطلب مالاً لا رقم البطاقة عبر رابط بنك مزيّف. والنقر الخطأ لا يثبت أن المرسل البنك.","en":"Ransomware locks files and demands money, not a card number through a fake bank link. A mistaken click does not prove the sender is the bank."}},{"id":"c05","lo":"C","code":{"ar":"ج.ب6 · التهديدات","en":"C.P6 · Threats"},"scenario":{"ar":"انقطع الكهرباء قبل الحفظ، فاختفى عمل ساعتين ولم يدخل أحد إلى الجهاز.","en":"The power failed before saving, two hours of work vanished, and nobody had entered the device."},"choices":[{"key":"acc","ar":"تلف أو فقد عرضي، لا اقتحام.","en":"Accidental damage or loss, not an intrusion."},{"key":"hack","ar":"قرصان، لأن اختفاء الملف لا يحدث إلا بدخول غير مأذون.","en":"A hacker, because a file disappears only after unauthorised access."},{"key":"phish","ar":"تصيّد، لأن انقطاع الكهرباء رسالة احتيالية من شركة الكهرباء.","en":"Phishing, because a power cut is a fraudulent message from the electricity company."}],"correct":"acc","why":{"ar":"الوحدة تذكر انقطاع الكهرباء وتعطل النظام قبل الحفظ فقداً عرضياً. لا يلزم فاعل خارجي.","en":"The unit lists a power cut and a crash before saving as accidental loss. No outside actor is required."},"impact":{"ar":"يضيع الجهد. الحفظ الدوري والنسخ يقللان هذا النوع لا جدران الحماية وحدها.","en":"The effort is lost. Regular saving and backup reduce this kind of loss; a firewall alone does not."},"miss":{"ar":"الاختفاء بلا دخول ليس قرصنة. وانقطاع التيار حدث فيزيائي لا رسالة تصيّد.","en":"Disappearance without access is not hacking. A power cut is a physical event, not a phishing message."}},{"id":"c06","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"موقع المدرسة يجب أن يقرأه برنامج قارئ الشاشة بلوحة المفاتيح، لا أن يبدو آمناً فقط.","en":"The school website must be readable by a screen reader and usable from the keyboard, not merely look secure."},"choices":[{"key":"wcag","ar":"إرشادات تيسير الوصول إلى محتوى الويب (WCAG) لجعل المحتوى في المتناول.","en":"Web Content Accessibility Guidelines (WCAG), so the content is reachable."},{"key":"iso","ar":"معيار أمن المعلومات آيزو 27000 وحده، لأنه يضمن عمل قارئ الشاشة.","en":"The ISO 27000 information-security standard alone, because it guarantees a screen reader will work."},{"key":"pwd","ar":"سياسة كلمات سر أقوى، فهي التي تجعل الموقع ميسَّر الوصول.","en":"A stronger password policy, because that is what makes a site accessible."}],"correct":"wcag","why":{"ar":"WCAG إرشادات لمحتوى يصل إليه المستخدمون، بمن فيهم من يستخدم قارئاً. آيزو 27000 لإدارة أمن المعلومات لا لقارئ الشاشة.","en":"WCAG is guidance for content people can reach, including those who use a reader. ISO 27000 manages information security; it does not make a screen reader work."},"impact":{"ar":"طالب لا يرى الشاشة يُستبعد إن اكتفت المدرسة بالقفل وكلمة السر.","en":"A student who cannot see the screen is excluded if the school stops at a lock and a password."},"miss":{"ar":"أمن المعلومات يحمي السرية ولا يصف النص البديل. وتقوية الكلمة لا تغيّر بنية الصفحة.","en":"Information security protects confidentiality; it does not describe alternative text. A stronger password does not change the page structure."}},{"id":"c07","lo":"C","code":{"ar":"ج.ب7 · الحماية","en":"C.P7 · Protection"},"scenario":{"ar":"موظفة الاستقبال ترى سجل الزبون وتحدّث هاتفه، ولا يجوز أن تحذف السجل.","en":"The receptionist can see a customer record and update the phone number, but must not delete the record."},"choices":[{"key":"level","ar":"مستوى وصول محدود: عرض وتعديل الحقل اللازم فقط.","en":"A limited access level: view, and edit only the field she needs."},{"key":"share","ar":"كلمة مدير واحدة مشتركة أسهل وبالأمان نفسه.","en":"One shared administrator password is simpler and just as safe."},{"key":"ro","ar":"جعل كل الملفات للقراءة فقط، بما فيها الهاتف الذي يجب أن تحدّثه.","en":"Make every file read-only, including the phone number she must update."}],"correct":"level","why":{"ar":"منح ما يلزم للدور فقط يقلل من يستطيع حذف البيانات. القراءة فقط تمنع التحديث المطلوب، والكلمة المشتركة توسّع الصلاحية.","en":"Giving only what the role needs reduces who can delete data. Read-only blocks the required update, and a shared password widens the rights."},"impact":{"ar":"يبقى السجل قابلاً للتصحيح من دون فتح الحذف لكل مكتب الاستقبال.","en":"The record can still be corrected without opening delete rights to the whole reception desk."},"miss":{"ar":"الكلمة المشتركة تجعل الجميع مدراء. والقراءة الشاملة توقف تحديث الهاتف.","en":"A shared password makes everyone an administrator. Full read-only stops the phone update."}},{"id":"c08","lo":"C","code":{"ar":"ج.ب7 · الحماية","en":"C.P7 · Protection"},"scenario":{"ar":"كل ليلة تُنسخ الملفات التي تغيرت، ومرة في الشهر تُنسخ كلها، والنسختان داخل غرفة الخادم فقط.","en":"Each night the changed files are copied, once a month everything is copied, and both copies stay in the server room only."},"choices":[{"key":"off","ar":"النمط تدريجي مع كامل، لكن بقاء النسخة في المبنى نفسه يبقي خطر الحريق.","en":"The pattern is incremental plus full, but keeping the copy in the same building leaves the fire risk."},{"key":"inc","ar":"النسخة التدريجية ليوم الخميس تحتوي وحدها كل النسخ الكاملة الأقدم.","en":"Thursday’s incremental copy by itself contains every older full copy."},{"key":"rare","ar":"النسخ أكثر من مرة في السنة يبطئ العمل، فالشهري الكثير أكثر من اللازم.","en":"Copying more than once a year slows the work, so monthly is already too often."}],"correct":"off","why":{"ar":"التدريجي ينسخ ما تغيّر منذ النسخة السابقة، والكامل أشمل. الوحدة تشير إلى نسخ خارج الموقع وخطة كوارث حتى لا يفنى الأصل والنسخ معاً.","en":"Incremental copies what changed since the last copy, and a full copy is broader. The unit points to off-site copies and a disaster plan so the original and the copies do not die together."},"impact":{"ar":"حريق الغرفة يذهب بالخادم وبالنسخ إن كانت بجانبه.","en":"A fire in the room takes the server and the copies if they sit beside it."},"miss":{"ar":"التدريجي لا يخزّن داخله كل الكامل السابق. وتقليل النسخ إلى مرة سنوية يوسّع ما يُفقد.","en":"An incremental copy does not hold every earlier full copy inside it. Cutting copies to once a year widens what can be lost."}},{"id":"c09","lo":"C","code":{"ar":"ج.ب7 · الحماية","en":"C.P7 · Protection"},"scenario":{"ar":"يريدون منع حركة شبكة غير مسموحة، وفحص الملفات من البرمجيات الضارة.","en":"They want to block network traffic that is not allowed, and to scan files for malware."},"choices":[{"key":"pair","ar":"جدار الحماية يراقب المرور. برنامج مكافحة الفيروسات يفحص الملفات.","en":"A firewall watches traffic. Antivirus software scans files."},{"key":"same","ar":"الاثنان أداة واحدة باسمين.","en":"The two are one tool with two names."},{"key":"swap","ar":"جدار الحماية يحذف الفيروس من داخل المستند، والمكافح يغلق المنافذ.","en":"The firewall removes a virus from inside a document, and antivirus closes the ports."}],"correct":"pair","why":{"ar":"جدار الحماية يقرر مرور الشبكة دخولاً وخروجاً. مكافحة الفيروسات تبحث عن البرمجيات الضارة في الملفات.","en":"A firewall decides whether network traffic may enter or leave. Antivirus looks for malware in files."},"impact":{"ar":"الاكتفاء بأحدهما يترك إما باب الشبكة وإما الملف المصاب.","en":"Relying on only one leaves either the network door or the infected file."},"miss":{"ar":"اختلاف الوظيفة يمنع دمجهما في اسم واحد. وقلب المهمتين يترك كلا الخطرين بلا أداته.","en":"The different jobs stop them being one name. Swapping the jobs leaves both risks without their tool."}},{"id":"c10","lo":"C","code":{"ar":"ج.ب7 · الحماية","en":"C.P7 · Protection"},"scenario":{"ar":"يُشفَّر ملف بمفتاح خاص، ثم يُرسل المفتاح في الرسالة نفسها مع الملف.","en":"A file is encrypted with a private key, then the key is sent in the same message as the file."},"choices":[{"key":"secret","ar":"إرسال المفتاح مع الملف يلغي الحماية. المفتاح يبقى سراً عن غير المخوّلين.","en":"Sending the key with the file removes the protection. The key stays secret from those who are not allowed."},{"key":"with","ar":"المفتاح يسافر مع الملف بأمان لأن الملف مشفّر أصلاً.","en":"The key can travel with the file safely because the file is already encrypted."},{"key":"hash","ar":"تجزئة الملف (hash) هي نفسها فك التشفير، فيُقرأ الأصل من التجزئة.","en":"A hash of the file is the same as decryption, so the original can be read from the hash."}],"correct":"secret","why":{"ar":"تشفير المفتاح الخاص يحتاج المفتاح نفسه للقراءة، فمن معه الملف والمفتاح يقرأ المحتوى. التجزئة توقيع ثابت الطول لا تعيد النص.","en":"Private-key encryption needs that key to read the file, so whoever has both reads the content. A hash is a fixed-length signature; it does not restore the text."},"impact":{"ar":"من يعترض الرسالة يحصل على السر وعلى القفل معاً.","en":"Whoever intercepts the message gets the secret and the lock together."},"miss":{"ar":"التشفير بلا فصل المفتاح لا يخفي شيئاً عن حامل الرسالة. والتجزئة لا تُفك إلى الملف الأصلي.","en":"Encryption without separating the key hides nothing from the person holding the message. A hash does not unlock into the original file."}},{"id":"c11","lo":"C","code":{"ar":"ج.ب7 · الحماية","en":"C.P7 · Protection"},"scenario":{"ar":"تُرسل رسالة بريد بنص عادي بين الخوادم وفيها رقم حساب.","en":"An email is sent as ordinary text between servers, and it contains an account number."},"choices":[{"key":"enc","ar":"النص العادي يُقرأ على الطريق. المحتوى الحساس يُشفَّر، مثلاً بأداة مثل PGP.","en":"Plain text can be read on the path. Sensitive content is encrypted, for example with a tool such as PGP."},{"key":"at","ar":"البريد مشفّر لأن العنوان فيه إشارة @.","en":"Email is encrypted because the address contains an @ sign."},{"key":"web","ar":"قفل موقع الشركة يشفر نصوص كل الرسائل حتى لو لم تُفتح الصفحة.","en":"The lock on the company website encrypts the text of every email even if the page is not opened."}],"correct":"enc","why":{"ar":"الوحدة تقول إن البريد بنص عادي يمكن أن يقرأه خادم على الطريق. تشفير المحتوى غير تشفير صفحة الويب.","en":"The unit says email in plain text can be read by a server on the path. Encrypting the content is not the same as encrypting a web page."},"impact":{"ar":"رقم الحساب يمر على جهات لا تعرفها المؤسسة.","en":"The account number passes through parties the organisation does not know."},"miss":{"ar":"علامة العنوان ليست تشفيراً. وشهادة الموقع تحمي زيارة ذلك الموقع لا رسالة بريد منفصلة.","en":"The sign in an address is not encryption. A website certificate protects a visit to that site, not a separate email."}},{"id":"c12","lo":"C","code":{"ar":"ج · السياسات","en":"C · Policy"},"scenario":{"ar":"متجر إلكتروني يعمل بهدوء طوال الأسبوع، ويخشون يوم تنزيل كبير يتضاعف فيه الطلب.","en":"An online shop is quiet all week, and they fear a sale day when orders multiply."},"choices":[{"key":"scale","ar":"قابلية التوسع: النظام يحتمل الذروة لا متوسط يوم هادئ فقط.","en":"Scalability: the system must cope with the peak, not only a quiet day’s average."},{"key":"quiet","ar":"إذا نجح في الأسبوع الهادئ فسينجح في يوم الذروة بالأجهزة نفسها بلا زيادة.","en":"If it works in a quiet week it will work on the peak day with the same equipment and no increase."},{"key":"small","ar":"قابلية التوسع تعني شراء أصغر خادم حتى تبقى الكلفة منخفضة.","en":"Scalability means buying the smallest server so the cost stays low."}],"correct":"scale","why":{"ar":"قابلية التوسع قدرة البنية على نمو الحركة، كما في ذروة الطلبات. النجاح في يوم هادئ لا يقيس الذروة.","en":"Scalability is the infrastructure’s ability to grow with traffic, as with a peak of orders. Success on a quiet day does not measure the peak."},"impact":{"ar":"يوم العرض قد يفقد مبيعاتاً إذا توقف الموقع عند أول موجة.","en":"The sale day can lose orders if the site stops at the first wave."},"miss":{"ar":"الحمل الهادئ لا يثبت الحمل العالي. وتصغير الخادم يعاكس القدرة على النمو.","en":"A quiet load does not prove a high load. Shrinking the server works against the ability to grow."}},{"id":"c13","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"موظف ينشر صورة زبون داخل المتجر على حساب المؤسسة بلا إذنه.","en":"An employee posts a photo of a customer inside the shop on the organisation’s account, without permission."},"choices":[{"key":"ask","ar":"النشر يحتاج إذناً. المكان العام لا يلغي خصوصية الشخص.","en":"Publishing needs permission. A public place does not remove the person’s privacy."},{"key":"public","ar":"المتجر مكان عام، فالصورة مباحة بلا سؤال.","en":"The shop is a public place, so the photo is allowed with no question."},{"key":"small","ar":"إذا كان الوجه صغيراً في الإطار فلا تنطبق القاعدة.","en":"If the face is small in the frame, the rule does not apply."}],"correct":"ask","why":{"ar":"الوحدة تعدّ التقاط الصورة أو نشرها بلا إذن غير مناسب أخلاقياً، حتى في مكان يرتاده الناس.","en":"The unit treats taking or publishing a photo without permission as ethically inappropriate, even in a place people visit."},"impact":{"ar":"تخسر المؤسسة ثقة الزبون وقد تعرض نفسها لشكوى خصوصية.","en":"The organisation loses the customer’s trust and may face a privacy complaint."},"miss":{"ar":"عمومية المكان ليست إذناً. وصغر الوجه لا يمحو أن الشخص ظاهر ومُعرَّف بالسياق.","en":"A public place is not permission. A small face does not remove the fact that the person is visible and identified by the context."}},{"id":"c14","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"تُرمى خراطيش الطابعة وأجهزة قديمة مع نفايات المكتب العادية.","en":"Printer cartridges and old devices are thrown out with ordinary office rubbish."},"choices":[{"key":"ew","ar":"هذه نفايات إلكترونية قد تكون ضارة، والتخلص منها مسألة أخلاقية وغالباً قانونية.","en":"This is electronic waste that may be harmful. Disposal is an ethical matter and often a legal one."},{"key":"none","ar":"الأجهزة الرقمية بلا نفايات مادية بعد انتهاء استخدامها.","en":"Digital devices leave no physical waste after they are finished."},{"key":"paper","ar":"فقط الورق يُحسب نفايات، والأجهزة تُخزَّن في الخزانة بلا سياسة.","en":"Only paper counts as waste. Devices can sit in a cupboard with no policy."}],"correct":"ew","why":{"ar":"الوحدة تذكر التخلص من المعدات والخراطيش أثراً بيئياً، وقد تكون المواد ضارة. التخزين العشوائي ليس معالجة.","en":"The unit names disposal of equipment and cartridges as an environmental effect, and the materials may be harmful. Random storage is not a treatment."},"impact":{"ar":"يضر المحيط ويعرّض المؤسسة للمساءلة إن خالفت قواعد النفايات.","en":"It harms the surroundings and can leave the organisation answerable if waste rules are broken."},"miss":{"ar":"الجهاز والخراطيش مادة تُرمى. وتأجيلها في خزانة لا يعفي من سياسة تخلص سليمة.","en":"The device and the cartridges are material that is thrown away. Leaving them in a cupboard does not remove the need for a sound disposal policy."}},{"id":"c15","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"موظف يفتح قاعدة خارج صلاحياته ويتصفحها فقط، من دون أن يغيّر شيئاً. المثال القانوني في الوحدة قانون إساءة استخدام الحاسوب لعام 1990.","en":"An employee opens a database outside his permission and only looks, changing nothing. The unit’s legal example is the Computer Misuse Act 1990."},"choices":[{"key":"look","ar":"الدخول غير المأذون جريمة في هذا القانون حتى قبل تعديل البيانات.","en":"Unauthorised access is an offence in this Act even before data is changed."},{"key":"ok","ar":"النظر من دون تعديل مباح دائماً ما دام الملف لم يُمس.","en":"Looking without a change is always allowed as long as the file is untouched."},{"key":"staff","ar":"كونه موظفاً يجعل دخوله مأذوناً ولو منعت السياسة ذلك الجزء.","en":"Being an employee makes his access authorised even if policy forbids that part."}],"correct":"look","why":{"ar":"القانون كما تعرضه الوحدة يجرّم الدخول غير المأذون، ثم يشدد إن قُصدت جريمة أخرى أو عُدّل النظام. الوظيفة لا تمنح كل الصلاحيات.","en":"As the unit presents the Act, unauthorised access is an offence, and it is more serious if a further crime is intended or the system is altered. A job does not grant every permission."},"impact":{"ar":"التصفح وحده يكفي لخرق السياسة وقد يكفي للمسؤولية في هذا المثال القانوني.","en":"Browsing alone can break policy and can be enough for liability in this legal example."},"miss":{"ar":"عدم التعديل لا يمسح الدخول الممنوع. وصفة الموظف لا تلغي حداً وضعته المؤسسة.","en":"The lack of a change does not erase forbidden access. The job title does not cancel a limit the organisation set."}},{"id":"c16","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"تأخذ المؤسسة صورة ظهرت في نتائج البحث وتضعها في إعلانها.","en":"The organisation takes a picture that appeared in search results and puts it in its advert."},"choices":[{"key":"lic","ar":"يلزم إذن أو رخصة تسمح بإعادة الاستخدام، مثل بعض رخص المشاع الإبداعي.","en":"Permission is required, or a licence that allows reuse, such as some Creative Commons licences."},{"key":"search","ar":"ظهور الصورة في البحث يعني أنها مجانية لإعادة الاستخدام.","en":"The picture appearing in search means it is free to reuse."},{"key":"size","ar":"تغيير القياس يصنع عملاً جديداً ويسقط حق المؤلف.","en":"Changing the size creates a new work and removes copyright."}],"correct":"lic","why":{"ar":"حقوق النشر تشمل الصورة الرقمية. الوحدة تحذّر من استخدام صورة البحث بلا إذن، وتذكر رخص المشاع الإبداعي كطريق مشروع.","en":"Copyright covers a digital image. The unit warns against using a search image without permission, and it mentions Creative Commons as a lawful route."},"impact":{"ar":"الإعلان قد يجر مطالبة حتى لو لم تقصد المؤسسة السرقة.","en":"The advert can lead to a claim even if the organisation did not mean to steal."},"miss":{"ar":"محرك البحث يعرض ولا يهب الملكية. وتصغير الصورة لا ينهي حق صاحبها.","en":"A search engine displays; it does not give ownership. Shrinking the picture does not end the owner’s right."}},{"id":"c17","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"جُمعت عناوين أولياء الأمور لأمسية مدرسية، ثم بِيعت إلى متجر. المثال في الوحدة مبادئ اللائحة العامة لحماية البيانات.","en":"Parents’ emails were collected for a school evening, then sold to a shop. The unit’s example is the principles of the General Data Protection Regulation."},"choices":[{"key":"purpose","ar":"حد الغرض: الجمع لغرض لا يبيح غرضاً جديداً غير متعلق.","en":"Purpose limitation: collection for one purpose does not allow an unrelated new purpose."},{"key":"acc","ar":"مبدأ الدقة هو الذي يمنع تغيير الغرض.","en":"The accuracy principle is what bans a change of purpose."},{"key":"store","ar":"لو حُذفت العناوين بعد سنة لصار البيع مباحاً.","en":"If the addresses were deleted after a year, the sale would have been allowed."}],"correct":"purpose","why":{"ar":"من مبادئ اللائحة حد الغرض: لا تُستخدم البيانات لغرض جديد غير متوافق مع سبب الجمع. الدقة تتعلق بصحة البيان، وحد التخزين بمدة الاحتفاظ.","en":"One principle is purpose limitation: data is not used for a new purpose incompatible with why it was collected. Accuracy is about correctness, and storage limitation is about how long it is kept."},"impact":{"ar":"الثقة تتزعزع، وقد تتعرض الجهة لغرامة إن انطبق هذا الإطار عليها.","en":"Trust is damaged, and the body may face a fine if this framework applies to it."},"miss":{"ar":"الدقة لا تتحدث عن البيع. وحذف البيانات ينهي الاحتفاظ ولا يحوّل البيع السابق إلى عمل مشروع.","en":"Accuracy does not speak about a sale. Deleting the data ends retention; it does not turn an earlier sale into a lawful act."}},{"id":"c18","lo":"C","code":{"ar":"ج.ب8 · القانون والأخلاق","en":"C.P8 · Law and ethics"},"scenario":{"ar":"تريد المؤسسة وثيقة تقول ما المواقع الممنوعة، وهل يُستخدم الجهاز الشخصي للعمل، وما واجب السرية.","en":"The organisation wants a document that says which sites are forbidden, whether a personal device may be used for work, and what the secrecy duty is."},"choices":[{"key":"aup","ar":"سياسة استخدام مقبول تغطي القيود والأجهزة والأمان.","en":"An acceptable use policy covering restrictions, devices and security."},{"key":"font","ar":"سياسة الاستخدام المقبول تحدد خط الرسائل فقط.","en":"An acceptable use policy only sets the font of messages."},{"key":"share","ar":"وجود السياسة يسمح للموظفين بتبادل كلمات السر.","en":"The existence of the policy allows staff to share passwords."}],"correct":"aup","why":{"ar":"سياسة الاستخدام المقبول في الوحدة تشمل قيود المواقع والوقت، وأنواع الأجهزة واستخدام الشخصي للعمل، والالتزام بالأمان.","en":"In the unit, an acceptable use policy includes limits on sites and time, device types and personal use for work, and the duty to keep security."},"impact":{"ar":"يعرف الموظف الحد قبل أن يخلط جهازه الخاص ببيانات العمل.","en":"The employee knows the limit before mixing a personal device with work data."},"miss":{"ar":"الخط شكل لا سياسة استخدام. والسياسة تقيّد المشاركة ولا تبيح تبادل كلمات السر.","en":"A font is appearance, not a use policy. The policy restricts sharing; it does not allow passwords to be exchanged."}},{"id":"c19","lo":"C","code":{"ar":"ج · السياسات","en":"C · Policy"},"scenario":{"ar":"شركة دعم خارجية ستصلح الأعطال، والمؤسسة تريد زمن استجابة واضحاً وطريقة لمتابعة الالتزام.","en":"An outside support firm will repair faults. The organisation wants a clear response time and a way to check compliance."},"choices":[{"key":"sla","ar":"اتفاقية مستوى خدمة (SLA) مع المورد تحدد الالتزام وكيف يُراقب.","en":"A service level agreement (SLA) with the supplier sets the duty and how it is monitored."},{"key":"war","ar":"ضمان الطابعة هو نفسه اتفاقية دعم مستمر مع شركة خارجية.","en":"The printer warranty is the same thing as an ongoing support agreement with an outside firm."},{"key":"aup","ar":"سياسة الاستخدام التي يوقّعها الموظف تُلزم شركة الدعم الخارجية.","en":"The acceptable use policy signed by an employee binds the outside support firm."}],"correct":"sla","why":{"ar":"اتفاقية مستوى الخدمة عقد خارجي أو داخلي يفصّل ما يقدمه المورد وكيف يُتابع الامتثال. الضمان يغطي عيباً في منتج، وسياسة الاستخدام تنظم سلوك المستخدم.","en":"A service level agreement is an external or internal contract that details what the supplier provides and how compliance is followed. A warranty covers a product fault. An acceptable use policy governs a user’s behaviour."},"impact":{"ar":"عند التأخير يوجد مرجع مكتوب بدل خلاف شفهي على «السرعة المعقولة».","en":"When there is a delay, there is a written reference instead of a spoken argument about “reasonable speed”."},"miss":{"ar":"الضمان لا يحدد زمن استجابة الدعم الشهري. وتوقيع الموظف لا يوقّع عن شركة أخرى.","en":"A warranty does not set the monthly support response time. An employee’s signature does not sign for another company."}},{"id":"c20","lo":"C","code":{"ar":"ج · السياسات","en":"C · Policy"},"scenario":{"ar":"تعطل النظام، ويريد موظف إرسال قاعدة الزبائن كاملة بالبريد حتى يساعد الجميع.","en":"The system has failed, and an employee wants to email the entire customer database so everyone can help."},"choices":[{"key":"proc","ar":"يُتبع إجراء الحادث المعتمد: تسجيل واحتواء واستعادة وإبلاغ الجهات المحددة، بلا نشر القاعدة.","en":"Follow the agreed incident procedure: record, contain, recover and tell the named parties, without publishing the database."},{"key":"mail","ar":"إرسال القاعدة إلى كل الموظفين يسرّع الإصلاح وهو جزء من الإجراء.","en":"Emailing the database to all staff speeds the repair and is part of the procedure."},{"key":"wait","ar":"يُنتظر النسخ الشهري التالي قبل تسجيل الحادث.","en":"Wait for the next monthly backup before recording the incident."}],"correct":"proc","why":{"ar":"إدارة الحادث تحتاج خطوات موحدة. الوحدة تحذّر من إرسال الحسابات أو قاعدة الزبائن بالبريد كطريقة للتعامل مع الخلل.","en":"Incident management needs the same steps every time. The unit warns against emailing the accounts or the customer database as a way of handling the fault."},"impact":{"ar":"البريد يحوّل عطلاً فنياً إلى تسريب، والتأخير في التسجيل يضيع ما حدث.","en":"The email turns a technical fault into a leak, and delay in recording loses what happened."},"miss":{"ar":"مساعدة الجميع لا تبرر نشر البيانات. وانتظار شهر يترك الحادث بلا أثر وبلا استعادة مرتبة.","en":"Helping everyone does not justify publishing the data. Waiting a month leaves the incident with no trace and no ordered recovery."}}];
+
+const UI = {
+  ar: {
+    sub: "الإستراتيجية والإدارة والبنية الأساسية",
+    lang: "English",
+    mute: "كتم الصوت",
+    unmute: "تشغيل الصوت",
+    live: (a, b) => `${a} / ${b}`,
+    kicker: "الوحدة 1 · الأول الثانوي",
+    title: "أنظمة تكنولوجيا المعلومات",
+    lede: "مواقف قصيرة من الوحدة: العتاد والبرمجيات والشبكات، ثم البيانات والمعلومات، ثم سياسات الاستخدام. العربية هي الأصل ويمكن التبديل إلى الإنجليزية في أي لحظة.",
+    outcomes: [
+      ["نتاج أ", "كيف تلبي البنية الأساسية احتياجات المؤسسة وأصحاب المصلحة."],
+      ["نتاج ب", "كيف تستفيد المؤسسة من البيانات والمعلومات داخلياً وخارجياً."],
+      ["نتاج ج", "سياسات الاستخدام: التهديدات، والحماية، والقانون، والأخلاق."]
+    ],
+    name: "اسم الطالب",
+    ph: "اكتب اسمك",
+    start: "بدء الاختبار",
+    note: "60 سؤالاً قصيراً، ولكل سؤال ثلاثة خيارات قريبة. يُخلط ترتيب الأسئلة وترتيب الخيارات في كل محاولة. الإجابة الخطأ تُظهر فجوة في الخدمة، والصحيحة تُظهر أن الخدمة جاهزة. عند عرض التقرير تُرسل العلامة وتفاصيل كل سؤال إلى سجل المعلم.",
+    case: "موقف",
+    confirm: "تأكيد الإجابة",
+    next: "السؤال التالي",
+    finish: "عرض تقرير البنية",
+    why: "لماذا هذه الإجابة",
+    impact: "الأثر على المؤسسة",
+    miss: "لماذا لا يصلح الخياران الآخران",
+    secure: "الخدمة جاهزة",
+    verified: "الاختيار يوافق الحاجة",
+    breach: "الربط غير مكتمل",
+    denied: "الخيار لا يخدم هذه الحالة",
+    correctStamp: "الخيار المناسب",
+    wrongStamp: "خيار قريب، لكنه لا يطابق الحالة",
+    reportKicker: "تقرير فهم البنية الأساسية",
+    scoreLine: (n, t) => `${n} من ${t}`,
+    weakest: "أضعف نتاج في هذه المحاولة",
+    review: "مراجعة الأسئلة",
+    again: "إعادة الاختبار",
+    missed: "أسئلة تحتاج إعادة قراءة",
+    noneMiss: "لا توجد إجابات خاطئة في هذه المحاولة.",
+    disclaimer: "هذا تدريب على الوحدة 1 وليس درجة رسمية من جهة الاعتماد.",
+    bands: [
+      [90, "مصمّم بنية أساسية", "تميّز: تفرّق بين الجهاز والبرنامج والشبكة، وتقرأ البيانات قبل القرار، وتربط السياسة بالتهديد."],
+      [75, "محلل أنظمة", "جدارة قوية. راجع النتاج الأضعف قبل مهمة التمييز."],
+      [60, "مستخدم مؤهل", "تجاوزت عتبة الفهم التطبيقي. عمّق الفرق بين الخيارات المتقاربة."],
+      [40, "بنية غير مكتملة", "ما زالت بعض الوظائف تختلط: إدخال مع إخراج، أو تخزين مع تحرير مشترك، أو حماية مع قانون."],
+      [0, "يحتاج إعادة بناء", "أعد قراءة الوحدة عبر السؤال: ما الحاجة، أي مكوّن يلبيها، وما أثر الاختيار الخطأ."]
+    ],
+    lo: { A: "نتاج أ", B: "نتاج ب", C: "نتاج ج" },
+    reviewNext: "التالي في المراجعة",
+    backReport: "العودة إلى التقرير",
+    sheetSending: "جاري إرسال العلامة وتفاصيل الأسئلة إلى سجل المعلم…",
+    sheetSent: "أُرسلت العلامة وتفاصيل كل سؤال إلى سجل المعلم.",
+    sheetFail: "لم تصل العلامة. تحقق من الاتصال ثم أعد فتح التقرير.",
+    sheetLocal: "العلامة محفوظة على هذا الجهاز. ربط سجل المعلم يحتاج نشر سكربت النتائج مرة واحدة."
+  },
+  en: {
+    sub: "Strategy, management and infrastructure",
+    lang: "العربية",
+    mute: "Mute sound",
+    unmute: "Enable sound",
+    live: (a, b) => `${a} / ${b}`,
+    kicker: "UNIT 1 · FIRST SECONDARY",
+    title: "Information technology systems",
+    lede: "Short situations from the unit: hardware, software and networks, then data and information, then policies for use. Arabic is the default, and you can switch to English at any moment.",
+    outcomes: [
+      ["Outcome A", "How infrastructure meets the needs of the organisation and its stakeholders."],
+      ["Outcome B", "How the organisation uses data and information, inside and outside."],
+      ["Outcome C", "Policies for use: threats, protection, law and ethics."]
+    ],
+    name: "Student name",
+    ph: "Type your name",
+    start: "Start the exam",
+    note: "60 short questions, three close choices each. Question order and choice order are shuffled on every attempt. A wrong answer shows a gap in the service. A right answer shows the service is ready. Opening the report sends the mark and every question to the teacher log.",
+    case: "Situation",
+    confirm: "Confirm answer",
+    next: "Next question",
+    finish: "Show the infrastructure report",
+    why: "Why this answer",
+    impact: "Effect on the organisation",
+    miss: "Why the other two fail",
+    secure: "Service ready",
+    verified: "The choice fits the need",
+    breach: "Link incomplete",
+    denied: "This choice does not serve the case",
+    correctStamp: "Fitting choice",
+    wrongStamp: "A close choice, but it does not match the case",
+    reportKicker: "Infrastructure understanding report",
+    scoreLine: (n, t) => `${n} of ${t}`,
+    weakest: "Weakest outcome in this attempt",
+    review: "Review questions",
+    again: "Retake the exam",
+    missed: "Questions to reread",
+    noneMiss: "There were no wrong answers in this attempt.",
+    disclaimer: "This is formative practice for Unit 1, not an official awarding-body grade.",
+    bands: [
+      [90, "Infrastructure designer", "Distinction-level: you separate device, software and network, read data before a decision, and tie policy to the threat."],
+      [75, "Systems analyst", "Strong merit-level work. Revisit the weakest outcome before a distinction task."],
+      [60, "Qualified user", "You cleared applied understanding. Look harder at the close choices."],
+      [40, "Incomplete setup", "Some functions still mix: input with output, storage with joint editing, or protection with law."],
+      [0, "Rebuild the ideas", "Reread the unit through the question: what is needed, which part meets it, and what the wrong choice would break."]
+    ],
+    lo: { A: "Outcome A", B: "Outcome B", C: "Outcome C" },
+    reviewNext: "Next in review",
+    backReport: "Back to the report",
+    sheetSending: "Sending the mark and every question to the teacher log…",
+    sheetSent: "The mark and every question were sent to the teacher log.",
+    sheetFail: "The mark did not arrive. Check the connection, then open the report again.",
+    sheetLocal: "The mark stays on this device. The teacher log needs the results script published once."
+  }
+};
+
+const state = {
+  lang: "ar",
+  screen: "intro",
+  name: "",
+  index: 0,
+  picked: null,
+  locked: false,
+  answers: [],
+  paper: [],
+  shuffle: [],
+  mute: false,
+  sent: false,
+  sending: false,
+  sheetNote: ""
+};
+
+let audioCtx = null;
+let fxTimer = 0;
+
+function t() { return UI[state.lang]; }
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+function shuffle(list) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function letters() {
+  return state.lang === "ar" ? ["أ", "ب", "ج"] : ["A", "B", "C"];
+}
+
+function correctCount() {
+  return state.answers.reduce((n, key, i) => n + (key === QUESTIONS[i].correct ? 1 : 0), 0);
+}
+
+function tone(ok) {
+  if (state.mute) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const now = audioCtx.currentTime;
+    const play = (freq, t0, dur, peak) => {
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.type = "sine";
+      o.frequency.setValueAtTime(freq, t0);
+      o.connect(g);
+      g.connect(audioCtx.destination);
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(peak, t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+      o.start(t0);
+      o.stop(t0 + dur + 0.02);
+    };
+    if (ok) {
+      play(523.25, now, 0.16, 0.05);
+      play(659.25, now + 0.1, 0.16, 0.045);
+      play(783.99, now + 0.2, 0.24, 0.04);
+    } else {
+      play(349.23, now, 0.14, 0.035);
+      play(293.66, now + 0.13, 0.22, 0.03);
+    }
+  } catch (err) { /* audio is optional */ }
+}
+
+function showFx(ok) {
+  const fx = document.getElementById("fx");
+  const u = t();
+  const lines = ok ? "LINK UP\nTASK OK\nSERVICE LIVE" : "LINK WEAK\nCHOICE MISS\nREVIEW NEED";
+  fx.className = "fx on " + (ok ? "good" : "bad");
+  fx.innerHTML = `<div class="fx-card"><p class="kicker">${ok ? "READY" : "GAP"}</p><h2>${esc(ok ? u.secure : u.breach)}</h2><p class="stamp">${esc(ok ? u.verified : u.denied)}</p><div class="stream">${lines}</div></div>`;
+  document.body.classList.toggle("gap", !ok);
+  clearTimeout(fxTimer);
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  fxTimer = setTimeout(() => {
+    fx.className = "fx";
+    fx.innerHTML = "";
+    document.body.classList.remove("gap");
+  }, motion ? 600 : (ok ? 1100 : 1300));
+}
+
+function choiceByKey(q, key) {
+  return q.choices.find((c) => c.key === key);
+}
+
+function render() {
+  const u = t();
+  document.documentElement.lang = state.lang;
+  document.documentElement.dir = state.lang === "ar" ? "rtl" : "ltr";
+  document.title = state.lang === "ar"
+    ? "اختبار الوحدة 1 | أنظمة تكنولوجيا المعلومات"
+    : "Unit 1 exam | IT systems";
+  document.getElementById("brandSub").textContent = u.sub;
+  document.getElementById("langBtn").textContent = u.lang;
+  document.getElementById("muteBtn").textContent = state.mute ? u.unmute : u.mute;
+  const shown = state.screen === "intro" ? 0 : correctCount();
+  document.getElementById("liveScore").textContent = u.live(shown, QUESTIONS.length);
+  const app = document.getElementById("app");
+  if (state.screen === "intro") app.innerHTML = introHtml();
+  else if (state.screen === "report") app.innerHTML = reportHtml();
+  else app.innerHTML = examHtml();
+  if (state.screen === "report" && state.sheetNote) {
+    const box = document.getElementById("sheetStatus");
+    if (box) box.textContent = state.sheetNote;
+  }
+}
+
+function introHtml() {
+  const u = t();
+  const cards = u.outcomes.map(([h, p]) => `<article class="card"><b>${esc(h)}</b><span>${esc(p)}</span></article>`).join("");
+  return `<section class="panel">
+    <p class="kicker">${esc(u.kicker)}</p>
+    <h1>${esc(u.title)}</h1>
+    <p class="lede">${esc(u.lede)}</p>
+    <div class="grid">${cards}</div>
+    <label class="field">${esc(u.name)}
+      <input id="nameInput" type="text" maxlength="60" placeholder="${esc(u.ph)}" value="${esc(state.name)}" autocomplete="name">
+    </label>
+    <div class="row">
+      <button type="button" class="primary" data-action="start">${esc(u.start)}</button>
+    </div>
+    <p class="hint">${esc(u.note)}</p>
+  </section>`;
+}
+
+function qIndex() {
+  return state.paper[state.index];
+}
+
+function examHtml() {
+  const u = t();
+  const qi = qIndex();
+  const q = QUESTIONS[qi];
+  const review = state.screen === "review";
+  const order = state.shuffle[qi];
+  const pct = Math.round((state.index / QUESTIONS.length) * 100);
+  const opts = order.map((key, i) => {
+    const c = choiceByKey(q, key);
+    let cls = "choice";
+    if (state.picked === key) cls += " selected";
+    if (state.locked && key === q.correct) cls += " good";
+    if (state.locked && state.picked === key && key !== q.correct) cls += " bad";
+    return `<button type="button" class="${cls}" data-action="pick" data-key="${esc(key)}" ${state.locked ? "disabled" : ""}>
+      <span class="letter">${letters()[i]}</span><span>${esc(c[state.lang])}</span>
+    </button>`;
+  }).join("");
+  let feedback = "";
+  if (state.locked) {
+    const ok = state.picked === q.correct;
+    feedback = `<div class="feedback ${ok ? "good" : "bad"}">
+      <p class="stamp">${esc(ok ? u.correctStamp : u.wrongStamp)}</p>
+      <h3>${esc(u.why)}</h3><p>${esc(q.why[state.lang])}</p>
+      <h3>${esc(u.impact)}</h3><p>${esc(q.impact[state.lang])}</p>
+      <h3>${esc(u.miss)}</h3><p>${esc(q.miss[state.lang])}</p>
+    </div>`;
+  }
+  const last = state.index === QUESTIONS.length - 1;
+  let action = "";
+  if (!state.locked) {
+    action = `<button type="button" class="primary" data-action="confirm" ${state.picked ? "" : "disabled"}>${esc(u.confirm)}</button>`;
+  } else if (review && last) {
+    action = `<button type="button" class="primary" data-action="report">${esc(u.backReport)}</button>`;
+  } else if (last) {
+    action = `<button type="button" class="primary" data-action="report">${esc(u.finish)}</button>`;
+  } else {
+    action = `<button type="button" class="primary" data-action="next">${esc(review ? u.reviewNext : u.next)}</button>`;
+  }
+  return `<section class="panel">
+    <div class="meta">
+      <span class="chip">${esc(q.code[state.lang])}</span>
+      <span>${esc(u.case)} <span class="count">${String(state.index + 1).padStart(2, "0")} / ${QUESTIONS.length}</span></span>
+    </div>
+    <div class="bar" aria-hidden="true"><span style="width:${pct}%"></span></div>
+    <div class="scenario"><strong>${esc(u.lo[q.lo])}</strong><p>${esc(q.scenario[state.lang])}</p></div>
+    <div class="choices">${opts}</div>
+    ${feedback}
+    <div class="row" style="margin-top:16px">${action}</div>
+  </section>`;
+}
+
+function bandFor(pct) {
+  return t().bands.find((b) => pct >= b[0]);
+}
+
+function groupsNow() {
+  const groups = { A: [0, 0], B: [0, 0], C: [0, 0] };
+  QUESTIONS.forEach((q, i) => {
+    groups[q.lo][1] += 1;
+    if (state.answers[i] === q.correct) groups[q.lo][0] += 1;
+  });
+  return groups;
+}
+
+function reportHtml() {
+  const u = t();
+  const total = QUESTIONS.length;
+  const score = correctCount();
+  const pct = Math.round((score / total) * 100);
+  const band = bandFor(pct);
+  const groups = groupsNow();
+  let weak = "A";
+  let weakRatio = 2;
+  Object.keys(groups).forEach((k) => {
+    const ratio = groups[k][1] ? groups[k][0] / groups[k][1] : 1;
+    if (ratio < weakRatio) { weakRatio = ratio; weak = k; }
+  });
+  const rows = Object.keys(groups).map((k) => {
+    const [ok, n] = groups[k];
+    const w = n ? Math.round((ok / n) * 100) : 0;
+    return `<div class="lo-row"><span>${esc(u.lo[k])}</span><div class="lo-track"><span style="width:${w}%"></span></div><b class="count">${ok}/${n}</b></div>`;
+  }).join("");
+  const misses = state.paper.map((i) => ({ q: QUESTIONS[i], i })).filter(({ q, i }) => state.answers[i] !== q.correct);
+  const missHtml = misses.length
+    ? misses.map(({ q }) => `<article><b>${esc(q.code[state.lang])}</b><p>${esc(q.scenario[state.lang])}</p><p>${esc(q.why[state.lang])}</p></article>`).join("")
+    : `<p>${esc(u.noneMiss)}</p>`;
+  const who = state.name.trim() || (state.lang === "ar" ? "الطالب" : "Student");
+  return `<section class="panel">
+    <p class="kicker">${esc(u.reportKicker)}</p>
+    <div class="report-top">
+      <div class="ring" style="--p:${pct}"><span>${pct}%</span></div>
+      <div>
+        <h1>${esc(band[1])}</h1>
+        <p class="lede">${esc(who)} · ${esc(u.scoreLine(score, total))}</p>
+        <p>${esc(band[2])}</p>
+        <p><strong>${esc(u.weakest)}:</strong> ${esc(u.lo[weak])}</p>
+      </div>
+    </div>
+    ${rows}
+    <div class="miss"><h2>${esc(u.missed)}</h2>${missHtml}</div>
+    <div class="row" style="margin-top:16px">
+      <button type="button" class="primary" data-action="review">${esc(u.review)}</button>
+      <button type="button" class="ghost" data-action="restart">${esc(u.again)}</button>
+    </div>
+    <p class="hint" id="sheetStatus"></p>
+    <p class="hint">${esc(u.disclaimer)}</p>
+  </section>`;
+}
+
+function startExam() {
+  const input = document.getElementById("nameInput");
+  state.name = input ? input.value : state.name;
+  state.answers = QUESTIONS.map(() => null);
+  state.paper = shuffle(QUESTIONS.map((_, i) => i));
+  state.shuffle = QUESTIONS.map((q) => shuffle(q.choices.map((c) => c.key)));
+  state.index = 0;
+  state.picked = null;
+  state.locked = false;
+  state.screen = "exam";
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+  } catch (err) { /* ignore */ }
+  render();
+}
+
+function onAppClick(event) {
+  const el = event.target.closest("[data-action]");
+  if (!el) return;
+  const action = el.dataset.action;
+  if (action === "start") startExam();
+  if (action === "pick" && !state.locked) {
+    state.picked = el.dataset.key;
+    render();
+  }
+  if (action === "confirm" && state.picked && !state.locked) {
+    state.locked = true;
+    state.answers[qIndex()] = state.picked;
+    const ok = state.picked === QUESTIONS[qIndex()].correct;
+    tone(ok);
+    showFx(ok);
+    render();
+  }
+  if (action === "next") {
+    state.index += 1;
+    state.picked = state.screen === "review" ? state.answers[qIndex()] : null;
+    state.locked = state.screen === "review";
+    render();
+  }
+  if (action === "report") {
+    state.screen = "report";
+    render();
+    submitResult();
+  }
+  if (action === "review") {
+    state.screen = "review";
+    state.index = 0;
+    state.picked = state.answers[state.paper[0]];
+    state.locked = true;
+    render();
+  }
+  if (action === "restart") {
+    state.screen = "intro";
+    state.index = 0;
+    state.picked = null;
+    state.locked = false;
+    state.sent = false;
+    state.sending = false;
+    state.sheetNote = "";
+    state.answers = [];
+    state.paper = [];
+    render();
+  }
+}
+
+function boot() {
+  if (QUESTIONS.length !== 60) throw new Error("Expected 60 questions");
+  const seen = new Set();
+  QUESTIONS.forEach((q) => {
+    if (seen.has(q.id)) throw new Error("Duplicate " + q.id);
+    seen.add(q.id);
+    if (!["A", "B", "C"].includes(q.lo)) throw new Error("Bad lo " + q.id);
+    if (q.choices.length !== 3 || !q.choices.some((c) => c.key === q.correct)) {
+      throw new Error("Bad choices " + q.id);
+    }
+    ["scenario", "why", "impact", "miss"].forEach((f) => {
+      if (!q[f] || !q[f].ar || !q[f].en) throw new Error("Missing " + f + " " + q.id);
+    });
+  });
+  document.getElementById("app").addEventListener("click", onAppClick);
+  document.getElementById("app").addEventListener("input", (event) => {
+    if (event.target.id === "nameInput") state.name = event.target.value;
+  });
+  document.getElementById("langBtn").addEventListener("click", () => {
+    state.lang = state.lang === "ar" ? "en" : "ar";
+    render();
+  });
+  document.getElementById("muteBtn").addEventListener("click", () => {
+    state.mute = !state.mute;
+    render();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (state.screen !== "exam" || state.locked) return;
+    const map = { "1": 0, "2": 1, "3": 2, a: 0, b: 1, c: 2 };
+    const idx = map[event.key.toLowerCase()];
+    if (idx === undefined) return;
+    state.picked = state.shuffle[qIndex()][idx];
+    render();
+  });
+  render();
+}
+
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzH-C3NxDYTreIsLtQZVoqqnsCJgyyyAAJRpxxTvBNP6KB8wYbkCMI6cglKZNaXRi8/exec";
+
+function submitResult() {
+  const note = function (text) {
+    state.sheetNote = text;
+    const live = document.getElementById("sheetStatus");
+    if (live) live.textContent = text;
+  };
+  if (state.sent) {
+    note(state.sheetNote || "");
+    return;
+  }
+  const u = t();
+  if (!SHEET_URL) {
+    note(u.sheetLocal);
+    return;
+  }
+  const total = QUESTIONS.length;
+  const score = correctCount();
+  const pct = Math.round((score / total) * 100);
+  const band = bandFor(pct);
+  const groups = groupsNow();
+  note(u.sheetSending);
+  state.sending = true;
+  fetch(SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      name: state.name.trim(),
+      correct: score,
+      total: total,
+      percent: pct,
+      band: band[1],
+      outcomeA: groups.A[0] + "/" + groups.A[1],
+      outcomeB: groups.B[0] + "/" + groups.B[1],
+      outcomeC: groups.C[0] + "/" + groups.C[1],
+      items: QUESTIONS.map((q, i) => {
+        const chosen = q.choices.find((c) => c.key === state.answers[i]);
+        return {
+          n: i + 1,
+          code: q.code.ar,
+          lo: q.lo,
+          ok: state.answers[i] === q.correct ? 1 : 0,
+          pick: chosen ? chosen.ar : ""
+        };
+      })
+    })
+  }).then(() => {
+    state.sent = true;
+    state.sending = false;
+    note(t().sheetSent);
+  }).catch(() => {
+    state.sending = false;
+    note(t().sheetFail);
+  });
+}
+
+boot();
+</script>
+</body>
+</html>
